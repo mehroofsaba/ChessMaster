@@ -40,7 +40,8 @@ A modern Java Chess game built using Java and Maven.
 
 ## 📸 Screenshot
 
-(Screenshot will be added soon.)
+![ChessMaster](screenshot1.png)
+![ChessMaster](screenshot2.png)
 
 ---
 
