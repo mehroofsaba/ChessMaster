@@ -1,0 +1,141 @@
+package com.mehroof.chessmaster.board;
+
+import javafx.scene.layout.GridPane;
+import javafx.geometry.Pos;
+import com.mehroof.chessmaster.pieces.*;
+
+public class ChessBoard extends GridPane {
+	private ChessSquare[][] squares;
+
+    public ChessBoard() {
+
+    	squares = new ChessSquare[BoardConstants.BOARD_SIZE][BoardConstants.BOARD_SIZE];
+    	
+        setHgap(0);
+        setVgap(0);
+        
+        setAlignment(Pos.CENTER);
+
+        createBoard();
+        
+        setupPieces();
+        
+        setPrefSize(640, 640);
+        setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
+
+        setStyle(
+                "-fx-border-color: black;" +
+                "-fx-border-width: 3;"
+        );
+    }
+
+    private void createBoard() {
+    	
+    	
+
+    	for(int row=0; row<BoardConstants.BOARD_SIZE; row++) {
+
+    		for(int column=0; column<BoardConstants.BOARD_SIZE; column++) {
+
+    			ChessSquare square = new ChessSquare(row, column);
+
+    			squares[row][column] = square;
+
+    			add(square, column, row);
+            }
+        }
+    }
+    
+    private void setupPieces() {
+
+        // Black major pieces
+        getSquare(0,0).setPiece(new Rook(false));
+        getSquare(0,1).setPiece(new Knight(false));
+        getSquare(0,2).setPiece(new Bishop(false));
+        getSquare(0,3).setPiece(new Queen(false));
+        getSquare(0,4).setPiece(new King(false));
+        getSquare(0,5).setPiece(new Bishop(false));
+        getSquare(0,6).setPiece(new Knight(false));
+        getSquare(0,7).setPiece(new Rook(false));
+
+        // Black pawns
+        for (int column = 0; column < BoardConstants.BOARD_SIZE; column++) {
+            getSquare(1, column).setPiece(new Pawn(false));
+        }
+
+        // White pawns
+        for (int column = 0; column < BoardConstants.BOARD_SIZE; column++) {
+            getSquare(6, column).setPiece(new Pawn(true));
+        }
+
+        // White major pieces
+        getSquare(7,0).setPiece(new Rook(true));
+        getSquare(7,1).setPiece(new Knight(true));
+        getSquare(7,2).setPiece(new Bishop(true));
+        getSquare(7,3).setPiece(new Queen(true));
+        getSquare(7,4).setPiece(new King(true));
+        getSquare(7,5).setPiece(new Bishop(true));
+        getSquare(7,6).setPiece(new Knight(true));
+        getSquare(7,7).setPiece(new Rook(true));
+    }
+    
+    public ChessSquare getSquare(int row, int column) {
+
+        return squares[row][column];
+
+    }
+    
+    public boolean movePiece(ChessSquare from, ChessSquare to) {
+    	
+
+        if (from.getPiece() == null) {
+            return false;
+        }
+
+        if (to.getPiece() != null &&
+            to.getPiece().isWhite() == from.getPiece().isWhite()) {
+
+            return false;
+        }
+
+        to.setPiece(from.getPiece());
+
+     // Pawn Promotion
+     if (to.getPiece() instanceof Pawn) {
+
+         if (to.getRow() == 0) {
+
+             to.setPiece(new Queen(true));
+
+         } else if (to.getRow() == 7) {
+
+             to.setPiece(new Queen(false));
+
+         }
+
+     }
+
+     from.setPiece(null);
+
+        return true;
+
+    }
+    
+    public void undoMove(
+            ChessSquare from,
+            ChessSquare to,
+            Piece capturedPiece
+    ) {
+
+        from.setPiece(to.getPiece());
+
+        to.setPiece(capturedPiece);
+
+    }
+    
+    public ChessSquare[][] getSquares() {
+
+        return squares;
+
+    }
+}
