@@ -509,4 +509,31 @@ public class GameController {
         return check && !legal;
     }
     
+    private List<Move> filterIllegalMoves(
+            ChessSquare fromSquare,
+            List<Move> moves) {
+
+        List<Move> legal = new java.util.ArrayList<>();
+
+        for (Move move : moves) {
+
+            BoardState copy = boardState.copy();
+
+            copy.movePiece(
+                    fromSquare.getRow(),
+                    fromSquare.getColumn(),
+                    move.getRow(),
+                    move.getColumn()
+            );
+
+            if (!isKingInCheck(copy, fromSquare.getPiece().isWhite())) {
+
+                legal.add(move);
+
+            }
+        }
+
+        return legal;
+    }
+    
 }
