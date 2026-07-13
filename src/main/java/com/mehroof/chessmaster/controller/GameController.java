@@ -87,6 +87,8 @@ public class GameController {
     	            square.getRow(),
     	            square.getColumn()
     	    );
+    	    
+    	    legalMoves = filterIllegalMoves(square, legalMoves);
 
     	    selectedSquare = square;
 
@@ -151,12 +153,18 @@ public class GameController {
     	        clearHighlights();
 
     	        selectedSquare.deselect();
+    	        
+    	        boardState = new BoardState(board.getSquares());
 
     	        gameState.switchTurn();
     	        
     	        if (isCheckmate(true)) {
 
     	            System.out.println("CHECKMATE! Black Wins!");
+
+    	        } else if (isStalemate(true)) {
+
+    	            System.out.println("STALEMATE!");
 
     	        } else if (isKingInCheck(true)) {
 
@@ -167,6 +175,10 @@ public class GameController {
     	        if (isCheckmate(false)) {
 
     	            System.out.println("CHECKMATE! White Wins!");
+
+    	        } else if (isStalemate(false)) {
+
+    	            System.out.println("STALEMATE!");
 
     	        } else if (isKingInCheck(false)) {
 
@@ -507,6 +519,13 @@ public class GameController {
         System.out.println("Legal = " + legal);
 
         return check && !legal;
+    }
+    
+    private boolean isStalemate(boolean white) {
+
+        return !isKingInCheck(white)
+                && !hasLegalMove(white);
+
     }
     
     private List<Move> filterIllegalMoves(
