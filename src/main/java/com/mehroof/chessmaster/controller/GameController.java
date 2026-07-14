@@ -11,6 +11,7 @@ import com.mehroof.chessmaster.model.Turn;
 import com.mehroof.chessmaster.model.GameState;
 import com.mehroof.chessmaster.view.StatusBar;
 import com.mehroof.chessmaster.pieces.Queen;
+import com.mehroof.chessmaster.view.GameOverDialog;
 
 
 public class GameController {
@@ -160,7 +161,10 @@ public class GameController {
     	        
     	        if (isCheckmate(true)) {
 
-    	            System.out.println("CHECKMATE! Black Wins!");
+    	        	GameOverDialog.show(
+    	        	        "Checkmate",
+    	        	        "Black Wins!"
+    	        	);
 
     	        } else if (isStalemate(true)) {
 
@@ -174,11 +178,17 @@ public class GameController {
 
     	        if (isCheckmate(false)) {
 
-    	            System.out.println("CHECKMATE! White Wins!");
+    	        	GameOverDialog.show(
+    	        	        "Checkmate",
+    	        	        "White Wins!"
+    	        	);
 
     	        } else if (isStalemate(false)) {
 
-    	            System.out.println("STALEMATE!");
+    	        	GameOverDialog.show(
+    	        	        "Draw",
+    	        	        "Stalemate!"
+    	        	);
 
     	        } else if (isKingInCheck(false)) {
 

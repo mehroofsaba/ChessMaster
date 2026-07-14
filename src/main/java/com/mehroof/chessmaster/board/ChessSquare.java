@@ -13,7 +13,7 @@ public class ChessSquare extends StackPane {
     public ChessSquare(int row, int column) {
 
         this.row = row;
-        this.column = column;
+        this.column = column; 
 
         setPrefSize(
                 BoardConstants.SQUARE_SIZE,
