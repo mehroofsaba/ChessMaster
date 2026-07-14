@@ -97,8 +97,46 @@ public class ChessBoard extends GridPane {
 
             return false;
         }
+        
+        Piece movingPiece = from.getPiece();
 
-        to.setPiece(from.getPiece());
+     // Castling
+        if (movingPiece instanceof King
+                && Math.abs(to.getColumn() - from.getColumn()) == 2) {
+
+            // Kingside
+            if (to.getColumn() == 6) {
+
+                ChessSquare rookFrom = getSquare(from.getRow(), 7);
+                ChessSquare rookTo   = getSquare(from.getRow(), 5);
+
+                rookTo.setPiece(rookFrom.getPiece());
+                rookFrom.setPiece(null);
+
+                if (rookTo.getPiece() != null) {
+                    rookTo.getPiece().setHasMoved(true);
+                }
+            }
+
+            // Queenside
+            else if (to.getColumn() == 2) {
+
+                ChessSquare rookFrom = getSquare(from.getRow(), 0);
+                ChessSquare rookTo   = getSquare(from.getRow(), 3);
+
+                rookTo.setPiece(rookFrom.getPiece());
+                rookFrom.setPiece(null);
+
+                if (rookTo.getPiece() != null) {
+                    rookTo.getPiece().setHasMoved(true);
+                }
+            }
+        }
+        
+        to.setPiece(movingPiece);
+        movingPiece.setHasMoved(true);
+        
+       
 
      // Pawn Promotion
      if (to.getPiece() instanceof Pawn) {

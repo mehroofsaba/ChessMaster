@@ -9,6 +9,8 @@ import com.mehroof.chessmaster.pieces.Piece;
 
 public class Rook extends Piece {
 
+	private boolean hasMoved = false;
+	
     public Rook(boolean white) {
         super(white);
     }
@@ -133,5 +135,14 @@ public class Rook extends Piece {
 
         return moves;
     }
+    
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+    
     
 }

@@ -7,6 +7,8 @@ import com.mehroof.chessmaster.move.Move;
 public abstract class Piece {
 
     private boolean white;
+    
+    private boolean hasMoved = false;
 
     public Piece(boolean white) {
         this.white = white;
@@ -23,4 +25,16 @@ public abstract class Piece {
             int row,
             int column
     );
+    
+    public boolean hasMoved() {
+
+        return hasMoved;
+
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+
+        this.hasMoved = hasMoved;
+
+    }
 }

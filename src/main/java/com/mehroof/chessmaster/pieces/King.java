@@ -8,6 +8,8 @@ import com.mehroof.chessmaster.move.Move;
 
 public class King extends Piece {
 
+	private boolean hasMoved = false;
+	
     public King(boolean white) {
         super(white);
     }
@@ -60,7 +62,35 @@ public class King extends Piece {
             }
         }
 
+        if (!hasMoved()) {
+
+            int rookColumn = 7;
+
+            Piece rook =
+                    boardState.getSquare(row, rookColumn).getPiece();
+
+            if (rook instanceof Rook
+                    && !rook.hasMoved()) {
+
+                if (boardState.getSquare(row, 5).getPiece() == null
+                        && boardState.getSquare(row, 6).getPiece() == null) {
+
+                    moves.add(new Move(row, 6));
+
+                }
+            }
+
+        }
+        
         return moves;
+    }
+    
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
     
 }
