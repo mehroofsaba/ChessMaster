@@ -134,6 +134,35 @@ public class ChessBoard extends GridPane {
         }
         
         to.setPiece(movingPiece);
+        
+     // Castling
+        if (movingPiece instanceof King) {
+
+            int difference = to.getColumn() - from.getColumn();
+
+            // Kingside
+            if (difference == 2) {
+
+                ChessSquare rookFrom = getSquare(from.getRow(), 7);
+                ChessSquare rookTo = getSquare(from.getRow(), 5);
+
+                rookTo.setPiece(rookFrom.getPiece());
+                rookFrom.setPiece(null);
+
+            }
+
+            // Queenside
+            else if (difference == -2) {
+
+                ChessSquare rookFrom = getSquare(from.getRow(), 0);
+                ChessSquare rookTo = getSquare(from.getRow(), 3);
+
+                rookTo.setPiece(rookFrom.getPiece());
+                rookFrom.setPiece(null);
+
+            }
+        }
+        
         movingPiece.setHasMoved(true);
         
        
