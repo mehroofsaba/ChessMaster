@@ -64,23 +64,29 @@ public class King extends Piece {
 
         if (!hasMoved()) {
 
-            int rookColumn = 7;
-
-            Piece rook =
-                    boardState.getSquare(row, rookColumn).getPiece();
+            // Kingside castling
+            Piece rook = boardState.getSquare(row, 7).getPiece();
 
             if (rook instanceof Rook
-                    && !rook.hasMoved()) {
+                    && !rook.hasMoved()
+                    && boardState.getSquare(row, 5).getPiece() == null
+                    && boardState.getSquare(row, 6).getPiece() == null) {
 
-                if (boardState.getSquare(row, 5).getPiece() == null
-                        && boardState.getSquare(row, 6).getPiece() == null) {
-
-                    moves.add(new Move(row, 6));
-
-                }
+                moves.add(new Move(row, 6));
             }
 
-        }
+            // Queenside castling
+            rook = boardState.getSquare(row, 0).getPiece();
+
+            if (rook instanceof Rook
+                    && !rook.hasMoved()
+                    && boardState.getSquare(row, 1).getPiece() == null
+                    && boardState.getSquare(row, 2).getPiece() == null
+                    && boardState.getSquare(row, 3).getPiece() == null) {
+
+                moves.add(new Move(row, 2));
+            }
+        }         
         
         return moves;
     }

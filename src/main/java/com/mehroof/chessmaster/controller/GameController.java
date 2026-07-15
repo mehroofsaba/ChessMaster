@@ -12,6 +12,7 @@ import com.mehroof.chessmaster.model.GameState;
 import com.mehroof.chessmaster.view.StatusBar;
 import com.mehroof.chessmaster.pieces.Queen;
 import com.mehroof.chessmaster.view.GameOverDialog;
+import com.mehroof.chessmaster.pieces.King;
 
 
 public class GameController {
@@ -413,6 +414,44 @@ public class GameController {
 
         return result;
     }
+    
+    private boolean isSquareAttacked(
+            int row,
+            int column,
+            boolean white) {
+
+        for (int r = 0; r < 8; r++) {
+
+            for (int c = 0; c < 8; c++) {
+
+                Piece piece = boardState.getSquare(r, c).getPiece();
+
+                if (piece == null) {
+                    continue;
+                }
+
+                if (piece.isWhite() == white) {
+                    continue;
+                }
+
+                List<Move> moves =
+                        piece.getLegalMoves(boardState, r, c);
+
+                for (Move move : moves) {
+
+                    if (move.getRow() == row
+                            && move.getColumn() == column) {
+
+                        return true;
+
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+    
     private boolean hasLegalMove(boolean white) {
 
         for (int row = 0; row < 8; row++) {
@@ -545,21 +584,47 @@ public class GameController {
         List<Move> legal = new java.util.ArrayList<>();
 
         for (Move move : moves) {
+        	
+        	Piece piece = fromSquare.getPiece();
 
-            BoardState copy = boardState.copy();
+        	if (piece instanceof King
+        	        && Math.abs(move.getColumn() - fromSquare.getColumn()) == 2) {
 
-            copy.movePiece(
-                    fromSquare.getRow(),
-                    fromSquare.getColumn(),
-                    move.getRow(),
-                    move.getColumn()
-            );
+        	    // King cannot castle while already in check
+        	    if (isKingInCheck(boardState, piece.isWhite())) {
+        	        continue;
+        	    }
+        	}
+        	BoardState copy = boardState.copy();
 
-            if (!isKingInCheck(copy, fromSquare.getPiece().isWhite())) {
+        	copy.movePiece(
+        	        fromSquare.getRow(),
+        	        fromSquare.getColumn(),
+        	        move.getRow(),
+        	        move.getColumn()
+        	);
 
-                legal.add(move);
+        	// Extra castling validation
+        	if (piece instanceof King
+        	        && Math.abs(move.getColumn() - fromSquare.getColumn()) == 2) {
 
-            }
+        	    int middleColumn =
+        	            (fromSquare.getColumn() + move.getColumn()) / 2;
+
+        	    if (isSquareAttacked(
+        	            fromSquare.getRow(),
+        	            middleColumn,
+        	            piece.isWhite())) {
+
+        	        continue;
+        	    }
+        	}
+
+        	if (!isKingInCheck(copy, piece.isWhite())) {
+
+        	    legal.add(move);
+
+        	}
         }
 
         return legal;
