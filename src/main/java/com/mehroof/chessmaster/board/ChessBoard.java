@@ -3,6 +3,7 @@ package com.mehroof.chessmaster.board;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 import com.mehroof.chessmaster.pieces.*;
+import com.mehroof.chessmaster.dialog.PromotionDialog;
 
 public class ChessBoard extends GridPane {
 	private ChessSquare[][] squares;
@@ -162,19 +163,39 @@ public class ChessBoard extends GridPane {
        
 
      // Pawn Promotion
-     if (to.getPiece() instanceof Pawn) {
+     // Pawn Promotion
+        if (to.getPiece() instanceof Pawn) {
 
-         if (to.getRow() == 0) {
+            if (to.getRow() == 0 || to.getRow() == 7) {
 
-             to.setPiece(new Queen(true));
+                boolean white = to.getPiece().isWhite();
 
-         } else if (to.getRow() == 7) {
+                String choice = PromotionDialog.show();
 
-             to.setPiece(new Queen(false));
+                switch (choice) {
 
-         }
+                case "Queen":
+                    to.setPiece(new Queen(white));
+                    break;
 
-     }
+                case "Rook":
+                    to.setPiece(new Rook(white));
+                    break;
+
+                case "Bishop":
+                    to.setPiece(new Bishop(white));
+                    break;
+
+                case "Knight":
+                    to.setPiece(new Knight(white));
+                    break;
+
+                default:
+                    to.setPiece(new Queen(white));
+                    break;
+                }
+            }
+        }
 
      from.setPiece(null);
 
