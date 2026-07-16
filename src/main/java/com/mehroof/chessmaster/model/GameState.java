@@ -1,8 +1,12 @@
 package com.mehroof.chessmaster.model;
 
+import com.mehroof.chessmaster.model.MoveRecord;
+
 public class GameState {
 
     private Turn currentTurn;
+    
+    private MoveRecord lastMove;
 
     public GameState() {
 
@@ -29,4 +33,13 @@ public class GameState {
         }
 
     }
+    
+    public MoveRecord getLastMove() {
+        return lastMove;
+    }
+
+    public void setLastMove(MoveRecord lastMove) {
+        this.lastMove = lastMove;
+    }
+    
 }

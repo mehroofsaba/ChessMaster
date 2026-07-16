@@ -13,7 +13,8 @@ import com.mehroof.chessmaster.view.StatusBar;
 import com.mehroof.chessmaster.pieces.Queen;
 import com.mehroof.chessmaster.view.GameOverDialog;
 import com.mehroof.chessmaster.pieces.King;
-
+import com.mehroof.chessmaster.model.MoveRecord;
+import com.mehroof.chessmaster.pieces.Pawn;
 
 public class GameController {
 
@@ -90,6 +91,8 @@ public class GameController {
     	            square.getColumn()
     	    );
     	    
+    	    addEnPassantMove(square, legalMoves);
+    	    
     	    legalMoves = filterIllegalMoves(square, legalMoves);
 
     	    selectedSquare = square;
@@ -130,6 +133,8 @@ public class GameController {
     	if (isLegalMove(square)
     	        && isMoveSafe(selectedSquare, square)) {
 
+    		Piece movingPiece = selectedSquare.getPiece();
+    		
     	    boolean moved = board.movePiece(selectedSquare, square);
     	    System.out.println("========= BOARD =========");
 
@@ -151,6 +156,16 @@ public class GameController {
 
     	    System.out.println("=========================");
     	    if (moved) {
+    	    	
+    	    	gameState.setLastMove(
+    	    		    new MoveRecord(
+    	    		        movingPiece,
+    	    		        selectedSquare.getRow(),
+    	    		        selectedSquare.getColumn(),
+    	    		        square.getRow(),
+    	    		        square.getColumn()
+    	    		    )
+    	    		);
 
     	        clearHighlights();
 
@@ -484,6 +499,10 @@ public class GameController {
                         column
                 );
                 
+                addEnPassantMove(square, moves);
+
+                moves = filterIllegalMoves(square, moves);
+               
                 if (piece instanceof Queen) {
 
                     System.out.println(
@@ -629,5 +648,58 @@ public class GameController {
 
         return legal;
     }
+    
+    private void addEnPassantMove(
+            ChessSquare square,
+            List<Move> legalMoves) {
+
+    	Piece currentPawn = square.getPiece();
+
+        if (!(currentPawn instanceof Pawn)) {
+            return;
+        }
+
+        MoveRecord lastMove = gameState.getLastMove();
+
+        if (lastMove == null) {
+            return;
+        }
+
+        Piece lastPiece = lastMove.getPiece();
+
+        if (!(lastPiece instanceof Pawn)) {
+            return;
+        }
+
+        int movedDistance =
+                Math.abs(lastMove.getToRow() - lastMove.getFromRow());
+
+        if (movedDistance != 2) {
+            return;
+        }
+
+        if (lastPiece.isWhite() == currentPawn.isWhite()) {
+            return;
+        }
+
+        if (lastMove.getToRow() != square.getRow()) {
+            return;
+        }
+
+        if (Math.abs(lastMove.getToColumn() - square.getColumn()) != 1) {
+            return;
+        }
+
+        int direction = currentPawn.isWhite() ? -1 : 1;
+
+        legalMoves.add(
+                new Move(
+                        square.getRow() + direction,
+                        lastMove.getToColumn()
+                )
+        );
+        
+    }
+    
     
 }
