@@ -1,23 +1,38 @@
 package com.mehroof.chessmaster.ai;
 
-import com.mehroof.chessmaster.board.ChessSquare;
-
 public class AIMove {
 
-    private ChessSquare from;
-    private ChessSquare to;
+    private int fromRow;
+    private int fromColumn;
 
-    public AIMove(ChessSquare from, ChessSquare to) {
+    private int toRow;
+    private int toColumn;
 
-        this.from = from;
-        this.to = to;
+    public AIMove(
+            int fromRow,
+            int fromColumn,
+            int toRow,
+            int toColumn) {
+
+        this.fromRow = fromRow;
+        this.fromColumn = fromColumn;
+        this.toRow = toRow;
+        this.toColumn = toColumn;
     }
 
-    public ChessSquare getFrom() {
-        return from;
+    public int getFromRow() {
+        return fromRow;
     }
 
-    public ChessSquare getTo() {
-        return to;
+    public int getFromColumn() {
+        return fromColumn;
+    }
+
+    public int getToRow() {
+        return toRow;
+    }
+
+    public int getToColumn() {
+        return toColumn;
     }
 }

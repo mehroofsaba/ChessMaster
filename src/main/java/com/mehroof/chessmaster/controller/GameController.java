@@ -178,6 +178,12 @@ public class GameController {
 
     	        gameState.switchTurn();
     	        
+    	        if (gameState.getCurrentTurn() == Turn.BLACK) {
+
+    	            makeAIMove();
+
+    	        }
+    	        
     	        if (isCheckmate(true)) {
 
     	        	GameOverDialog.show(
@@ -704,5 +710,46 @@ public class GameController {
         
     }
     
+    private void makeAIMove() {
+
+        AIMove aiMove = ai.chooseMove(board);
+
+        if (aiMove == null) {
+            return;
+        }
+
+        ChessSquare from =
+                board.getSquare(
+                        aiMove.getFromRow(),
+                        aiMove.getFromColumn()
+                );
+
+        ChessSquare to =
+                board.getSquare(
+                        aiMove.getToRow(),
+                        aiMove.getToColumn()
+                );
+
+        boolean moved = board.movePiece(from, to);
+
+        if (!moved) {
+            return;
+        }
+
+        boardState = board.getBoardState();
+
+        gameState.switchTurn();
+
+        if (gameState.getCurrentTurn() == Turn.WHITE) {
+
+            statusBar.showWhiteTurn();
+
+        } else {
+
+            statusBar.showBlackTurn();
+
+        }
+
+    }
     
 }

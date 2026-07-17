@@ -1,8 +1,7 @@
 package com.mehroof.chessmaster.model;
 
 import com.mehroof.chessmaster.board.ChessSquare;
-import com.mehroof.chessmaster.pieces.King;
-import com.mehroof.chessmaster.pieces.Piece;
+import com.mehroof.chessmaster.pieces.*;
 
 public class BoardState {
 
@@ -68,7 +67,9 @@ public class BoardState {
                 ChessSquare copy =
                         new ChessSquare(row, column);
 
-                copy.setPiece(original.getPiece());
+                copy.setPiece(
+                        copyPiece(original.getPiece())
+                );
 
                 copiedSquares[row][column] = copy;
 
@@ -81,19 +82,78 @@ public class BoardState {
 
     }
     
-    public void movePiece(
+    public Piece movePiece(
             int fromRow,
             int fromColumn,
             int toRow,
             int toColumn) {
 
-        Piece piece =
+        Piece captured =
+                getSquare(toRow, toColumn).getPiece();
+
+        Piece moving =
                 getSquare(fromRow, fromColumn).getPiece();
 
-        getSquare(toRow, toColumn).setPiece(piece);
+        getSquare(toRow, toColumn).setPiece(moving);
 
         getSquare(fromRow, fromColumn).setPiece(null);
 
+        return captured;
+    }
+    
+    public void undoMove(
+            int fromRow,
+            int fromColumn,
+            int toRow,
+            int toColumn,
+            Piece capturedPiece) {
+
+        Piece moving =
+                getSquare(toRow, toColumn).getPiece();
+
+        getSquare(fromRow, fromColumn).setPiece(moving);
+
+        getSquare(toRow, toColumn).setPiece(capturedPiece);
+
+    }
+    
+    private Piece copyPiece(Piece piece) {
+
+        if (piece == null) {
+            return null;
+        }
+
+        Piece newPiece;
+
+        if (piece instanceof Pawn) {
+
+            newPiece = new Pawn(piece.isWhite());
+
+        } else if (piece instanceof Knight) {
+
+            newPiece = new Knight(piece.isWhite());
+
+        } else if (piece instanceof Bishop) {
+
+            newPiece = new Bishop(piece.isWhite());
+
+        } else if (piece instanceof Rook) {
+
+            newPiece = new Rook(piece.isWhite());
+
+        } else if (piece instanceof Queen) {
+
+            newPiece = new Queen(piece.isWhite());
+
+        } else {
+
+            newPiece = new King(piece.isWhite());
+
+        }
+
+        newPiece.setHasMoved(piece.hasMoved());
+
+        return newPiece;
     }
 
 }
