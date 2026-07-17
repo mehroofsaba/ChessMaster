@@ -15,6 +15,8 @@ import com.mehroof.chessmaster.view.GameOverDialog;
 import com.mehroof.chessmaster.pieces.King;
 import com.mehroof.chessmaster.model.MoveRecord;
 import com.mehroof.chessmaster.pieces.Pawn;
+import com.mehroof.chessmaster.ai.ChessAI;
+import com.mehroof.chessmaster.ai.AIMove;
 
 public class GameController {
 
@@ -25,6 +27,7 @@ public class GameController {
     private List<Move> legalMoves;
     private GameState gameState;
     private StatusBar statusBar;
+    private ChessAI ai = new ChessAI();
 
     public GameController(
             ChessBoard board,

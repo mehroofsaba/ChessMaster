@@ -4,6 +4,7 @@ import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 import com.mehroof.chessmaster.pieces.*;
 import com.mehroof.chessmaster.dialog.PromotionDialog;
+import com.mehroof.chessmaster.model.BoardState;
 
 public class ChessBoard extends GridPane {
 	private ChessSquare[][] squares;
@@ -83,6 +84,12 @@ public class ChessBoard extends GridPane {
     public ChessSquare getSquare(int row, int column) {
 
         return squares[row][column];
+
+    }
+    
+    public BoardState getBoardState() {
+
+        return new BoardState(squares);
 
     }
     
