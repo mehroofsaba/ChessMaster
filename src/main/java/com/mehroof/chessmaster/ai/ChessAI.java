@@ -87,32 +87,47 @@ public class ChessAI {
 
 	        Piece captured =
 	                copiedBoard.movePiece(
-	                		move.getFromRow(),
-	                		move.getFromColumn(),
-	                		move.getToRow(),
-	                		move.getToColumn()
+	                        move.getFromRow(),
+	                        move.getFromColumn(),
+	                        move.getToRow(),
+	                        move.getToColumn()
 	                );
 
 	        int score = evaluator.evaluate(copiedBoard);
 
+	        System.out.println(
+	                "Move "
+	                + move.getFromRow()
+	                + ","
+	                + move.getFromColumn()
+	                + " -> "
+	                + move.getToRow()
+	                + ","
+	                + move.getToColumn()
+	                + " = "
+	                + score
+	        );
+
 	        copiedBoard.undoMove(
-	        		move.getFromRow() ,
-	        		move.getFromColumn(),
-	        		move.getToRow(),
-	        		move.getToColumn(),
+	                move.getFromRow(),
+	                move.getFromColumn(),
+	                move.getToRow(),
+	                move.getToColumn(),
 	                captured
 	        );
 
 	        if (score > bestScore) {
 
 	            bestScore = score;
-
 	            bestMove = move;
-
 	        }
-
 	    }
 
+	    System.out.println(
+	            "AI chose score: "
+	            + bestScore
+	    );
+	    
 	    return bestMove;
 	    
 	}
