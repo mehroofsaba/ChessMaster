@@ -30,6 +30,23 @@ public class ChessBoard extends GridPane {
                 "-fx-border-width: 3;"
         );
     }
+    
+    public ChessBoard(BoardState boardState) {
+
+        this.squares = new ChessSquare[8][8];
+
+        for (int row = 0; row < 8; row++) {
+
+            for (int column = 0; column < 8; column++) {
+
+                this.squares[row][column] =
+                        boardState.getSquare(row, column);
+
+            }
+
+        }
+
+    }
 
     private void createBoard() {
     	

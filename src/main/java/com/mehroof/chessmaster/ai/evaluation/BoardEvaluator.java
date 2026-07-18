@@ -3,6 +3,7 @@ package com.mehroof.chessmaster.ai.evaluation;
 import com.mehroof.chessmaster.board.ChessSquare;
 import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.pieces.*;
+import com.mehroof.chessmaster.ai.tables.PieceSquareTables;
 
 public class BoardEvaluator {
 
@@ -21,16 +22,27 @@ public class BoardEvaluator {
 	            if (piece == null)
 	                continue;
 
-	            int value = getPieceValue(piece);
+	            int value =
+	                    getPieceValue(
+	                            piece,
+	                            row,
+	                            column
+	                    );
+	            
+	            int mobility =
+	                    piece.getLegalMoves(
+	                            boardState,
+	                            row,
+	                            column
+	                    ).size();
 
 	            if (piece.isWhite()) {
 
-	                score -= value;
+	            	score -= value + mobility * 5;
 
 	            } else {
 
-	                score += value;
-
+	            	score += value + mobility * 5;
 	            }
 	        }
 	    }
@@ -38,26 +50,125 @@ public class BoardEvaluator {
 	    return score;
 	}
 
-    private int getPieceValue(Piece piece) {
+	private int getPieceValue(
+	        Piece piece,
+	        int row,
+	        int column) {
+		
+		if (piece instanceof Pawn) {
 
-        if (piece instanceof Pawn)
-            return 100;
+		    int positionBonus;
 
-        if (piece instanceof Knight)
-            return 320;
+		    if (piece.isWhite()) {
 
-        if (piece instanceof Bishop)
-            return 330;
+		        positionBonus =
+		                PieceSquareTables.PAWN[7-row][column];
 
-        if (piece instanceof Rook)
-            return 500;
+		    } else {
 
-        if (piece instanceof Queen)
-            return 900;
+		        positionBonus =
+		                PieceSquareTables.PAWN[row][column];
 
-        if (piece instanceof King)
-            return 10000;
+		    }
 
-        return 0;
-    }
+		    return 100 + positionBonus;
+		}
+
+	    if (piece instanceof Knight) {
+
+	        int positionBonus;
+
+	        if (piece.isWhite()) {
+
+	            positionBonus =
+	                    PieceSquareTables.KNIGHT[7 - row][column];
+
+	        } else {
+
+	            positionBonus =
+	                    PieceSquareTables.KNIGHT[row][column];
+
+	        }
+
+	        return 320 + positionBonus;
+	    }
+
+	    if (piece instanceof Bishop) {
+
+	        int positionBonus;
+
+	        if (piece.isWhite()) {
+
+	            positionBonus =
+	                    PieceSquareTables.BISHOP[7 - row][column];
+
+	        } else {
+
+	            positionBonus =
+	                    PieceSquareTables.BISHOP[row][column];
+
+	        }
+
+	        return 330 + positionBonus;
+	    }
+	    
+	    if (piece instanceof Rook) {
+
+	        int positionBonus;
+
+	        if (piece.isWhite()) {
+
+	            positionBonus =
+	                    PieceSquareTables.ROOK[7 - row][column];
+
+	        } else {
+
+	            positionBonus =
+	                    PieceSquareTables.ROOK[row][column];
+
+	        }
+
+	        return 500 + positionBonus;
+	    }
+
+	    if (piece instanceof Queen) {
+
+	        int positionBonus;
+
+	        if (piece.isWhite()) {
+
+	            positionBonus =
+	                    PieceSquareTables.QUEEN[7 - row][column];
+
+	        } else {
+
+	            positionBonus =
+	                    PieceSquareTables.QUEEN[row][column];
+
+	        }
+
+	        return 900 + positionBonus;
+	    }
+
+	    if (piece instanceof King) {
+
+	        int positionBonus;
+
+	        if (piece.isWhite()) {
+
+	            positionBonus =
+	                    PieceSquareTables.KING[7 - row][column];
+
+	        } else {
+
+	            positionBonus =
+	                    PieceSquareTables.KING[row][column];
+
+	        }
+
+	        return 10000 + positionBonus;
+	    }
+
+	    return 0;
+	}
 }
