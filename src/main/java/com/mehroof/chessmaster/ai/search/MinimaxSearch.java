@@ -18,11 +18,60 @@ public class MinimaxSearch implements Search {
 	
 	private static final int SEARCH_DEPTH = 3;
 	
-    @Override
-    public AIMove findBestMove(ChessBoard board) {
+	@Override
+	public AIMove findBestMove(ChessBoard board) {
 
-        return null;
-    }
+	    int bestScore = Integer.MIN_VALUE;
+
+	    AIMove bestMove = null;
+
+	    List<AIMove> moves =
+	            generateMoves(
+	                    board.getBoardState(),
+	                    false
+	            );
+
+	    for (AIMove move : moves) {
+
+	        BoardState copied =
+	                board.getBoardState().copy();
+
+	        Piece captured =
+	                copied.movePiece(
+	                        move.getFromRow(),
+	                        move.getFromColumn(),
+	                        move.getToRow(),
+	                        move.getToColumn()
+	                );
+
+	        int score =
+	                minimax(
+	                        new ChessBoard(copied),
+	                        SEARCH_DEPTH - 1,
+	                        false
+	                );
+
+	        copied.undoMove(
+	                move.getFromRow(),
+	                move.getFromColumn(),
+	                move.getToRow(),
+	                move.getToColumn(),
+	                captured
+	        );
+
+	        if (score > bestScore) {
+
+	            bestScore = score;
+
+	            bestMove = move;
+
+	        }
+
+	    }
+
+	    return bestMove;
+
+	}
     
     private int minimax(
             ChessBoard board,
@@ -91,12 +140,41 @@ public class MinimaxSearch implements Search {
                             true
                     );
 
-            // We'll add the minimax loop here next.
+            for (AIMove move : moves) {
+
+                BoardState copied =
+                        board.getBoardState().copy();
+
+                Piece captured =
+                        copied.movePiece(
+                                move.getFromRow(),
+                                move.getFromColumn(),
+                                move.getToRow(),
+                                move.getToColumn()
+                        );
+
+                int score =
+                        minimax(
+                                new ChessBoard(copied),
+                                depth - 1,
+                                true
+                        );
+
+                copied.undoMove(
+                        move.getFromRow(),
+                        move.getFromColumn(),
+                        move.getToRow(),
+                        move.getToColumn(),
+                        captured
+                );
+
+                best = Math.min(best, score);
+
+            }
 
             return best;
 
         }
-
     }
     
     private List<AIMove> generateMoves(
