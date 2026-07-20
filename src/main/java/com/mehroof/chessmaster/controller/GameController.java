@@ -136,108 +136,8 @@ public class GameController {
     	if (isLegalMove(square)
     	        && isMoveSafe(selectedSquare, square)) {
 
-    		Piece movingPiece = selectedSquare.getPiece();
-    		
-    	    boolean moved = board.movePiece(selectedSquare, square);
-    	    System.out.println("========= BOARD =========");
+    	    executeMove(square);
 
-    	    for (int r = 0; r < 8; r++) {
-
-    	        for (int c = 0; c < 8; c++) {
-
-    	            Piece p = boardState.getSquare(r, c).getPiece();
-
-    	            if (p == null) {
-    	                System.out.print(". ");
-    	            } else {
-    	                System.out.print(p.getSymbol() + " ");
-    	            }
-    	        }
-
-    	        System.out.println();
-    	    }
-
-    	    System.out.println("=========================");
-    	    if (moved) {
-    	    	
-    	    	gameState.setLastMove(
-    	    		    new MoveRecord(
-    	    		        movingPiece,
-    	    		        selectedSquare.getRow(),
-    	    		        selectedSquare.getColumn(),
-    	    		        square.getRow(),
-    	    		        square.getColumn()
-    	    		    )
-    	    		);
-
-    	        clearHighlights();
-
-    	        selectedSquare.deselect();
-    	        
-    	        boardState = new BoardState(board.getSquares());
-
-    	        gameState.switchTurn();
-    	        
-    	        if (gameState.getCurrentTurn() == Turn.BLACK) {
-
-    	            makeAIMove();
-
-    	        }
-    	        
-    	        if (isCheckmate(true)) {
-
-    	        	GameOverDialog.show(
-    	        	        "Checkmate",
-    	        	        "Black Wins!"
-    	        	);
-
-    	        } else if (isStalemate(true)) {
-
-    	            System.out.println("STALEMATE!");
-
-    	        } else if (isKingInCheck(true)) {
-
-    	            System.out.println("White King is in CHECK!");
-
-    	        }
-
-    	        if (isCheckmate(false)) {
-
-    	        	GameOverDialog.show(
-    	        	        "Checkmate",
-    	        	        "White Wins!"
-    	        	);
-
-    	        } else if (isStalemate(false)) {
-
-    	        	GameOverDialog.show(
-    	        	        "Draw",
-    	        	        "Stalemate!"
-    	        	);
-
-    	        } else if (isKingInCheck(false)) {
-
-    	            System.out.println("Black King is in CHECK!");
-
-    	        }
-    	        
-    	        if (gameState.getCurrentTurn() == Turn.WHITE) {
-
-    	            statusBar.showWhiteTurn();
-
-    	        } else {
-
-    	            statusBar.showBlackTurn();
-
-    	        }
-
-    	        System.out.println(
-    	                "Current Turn: " + gameState.getCurrentTurn()
-    	        );
-
-    	        selectedSquare = null;
-
-    	    }
     	    return;
     	}
     	// If the click wasn't a legal move, cancel the selection.
@@ -246,6 +146,50 @@ public class GameController {
     	selectedSquare = null;
     }
     
+    private void executeMove(
+            ChessSquare destination) {
+
+        Piece movingPiece = selectedSquare.getPiece();
+
+        boolean moved =
+                board.movePiece(
+                        selectedSquare,
+                        destination
+                );
+
+        if (!moved) {
+            return;
+        }
+
+        gameState.setLastMove(
+                new MoveRecord(
+                        movingPiece,
+                        selectedSquare.getRow(),
+                        selectedSquare.getColumn(),
+                        destination.getRow(),
+                        destination.getColumn()
+                )
+        );
+
+        clearHighlights();
+
+        selectedSquare.deselect();
+
+        boardState = new BoardState(board.getSquares());
+
+        gameState.switchTurn();
+
+        if (gameState.getCurrentTurn() == Turn.BLACK) {
+
+            makeAIMove();
+
+        }
+
+        updateGameStatus();
+
+        selectedSquare = null;
+
+    }
     
     private boolean isLegalMove(ChessSquare square) {
 
@@ -739,6 +683,52 @@ public class GameController {
         boardState = board.getBoardState();
 
         gameState.switchTurn();
+
+        if (gameState.getCurrentTurn() == Turn.WHITE) {
+
+            statusBar.showWhiteTurn();
+
+        } else {
+
+            statusBar.showBlackTurn();
+
+        }
+
+    }
+    
+    private void updateGameStatus() {
+
+        if (isCheckmate(true)) {
+
+            GameOverDialog.show(
+                    "Checkmate",
+                    "Black Wins!"
+            );
+
+        } else if (isStalemate(true)) {
+
+            GameOverDialog.show(
+                    "Draw",
+                    "Stalemate!"
+            );
+
+        }
+
+        if (isCheckmate(false)) {
+
+            GameOverDialog.show(
+                    "Checkmate",
+                    "White Wins!"
+            );
+
+        } else if (isStalemate(false)) {
+
+            GameOverDialog.show(
+                    "Draw",
+                    "Stalemate!"
+            );
+
+        }
 
         if (gameState.getCurrentTurn() == Turn.WHITE) {
 
