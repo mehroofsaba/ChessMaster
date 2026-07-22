@@ -38,7 +38,7 @@ public class CheckDetector {
     	            continue;
 
     	        List<Move> attacks =
-    	                piece.getLegalMoves(
+    	                piece.generateMoves(
     	                        board,
     	                        row,
     	                        column

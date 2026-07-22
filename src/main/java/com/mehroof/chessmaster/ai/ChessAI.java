@@ -38,7 +38,7 @@ public class ChessAI {
 	            }
 
 	            List<Move> moves =
-	                    piece.getLegalMoves(
+	                    piece.generateMoves(
 	                            board.getBoardState(),
 	                            row,
 	                            column

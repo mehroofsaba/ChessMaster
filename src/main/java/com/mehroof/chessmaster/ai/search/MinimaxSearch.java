@@ -201,7 +201,7 @@ public class MinimaxSearch implements Search {
                     continue;
 
                 List<Move> legalMoves =
-                        piece.getLegalMoves(
+                        piece.generateMoves(
                                 boardState,
                                 row,
                                 column

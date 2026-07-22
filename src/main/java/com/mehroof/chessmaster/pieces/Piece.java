@@ -20,11 +20,10 @@ public abstract class Piece {
 
     public abstract String getSymbol();
     
-    public abstract List<Move> getLegalMoves(
+    public abstract List<Move> generateMoves(
             BoardState boardState,
             int row,
-            int column
-    );
+            int column);
     
     public boolean hasMoved() {
 

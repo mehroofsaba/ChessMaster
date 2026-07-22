@@ -88,7 +88,7 @@ public class GameController {
     	        return;
     	    }
 
-    	    legalMoves = piece.getLegalMoves(
+    	    legalMoves = piece.generateMoves(
     	            boardState,
     	            square.getRow(),
     	            square.getColumn()
@@ -275,7 +275,7 @@ public class GameController {
                 }
 
                 List<Move> moves =
-                        piece.getLegalMoves(state, row, column);
+                        piece.generateMoves(state, row, column);
 
                 for (Move move : moves) {
 
@@ -403,7 +403,7 @@ public class GameController {
                 }
 
                 List<Move> moves =
-                        piece.getLegalMoves(boardState, r, c);
+                        piece.generateMoves(boardState, r, c);
 
                 for (Move move : moves) {
 
@@ -446,7 +446,7 @@ public class GameController {
                    
                 }
                 
-                List<Move> moves = piece.getLegalMoves(
+                List<Move> moves = piece.generateMoves(
                         boardState,
                         row,
                         column
@@ -696,7 +696,20 @@ public class GameController {
 
     }
     
+ 
+
     private void updateGameStatus() {
+
+    	    checkWhiteGameState();
+
+    	    checkBlackGameState();
+
+    	    updateTurnDisplay();
+
+    	}
+
+    
+    private void checkWhiteGameState() {
 
         if (isCheckmate(true)) {
 
@@ -712,7 +725,15 @@ public class GameController {
                     "Stalemate!"
             );
 
+        } else if (isKingInCheck(true)) {
+
+            System.out.println("White King is in CHECK!");
+
         }
+
+    }
+    
+    private void checkBlackGameState() {
 
         if (isCheckmate(false)) {
 
@@ -728,7 +749,15 @@ public class GameController {
                     "Stalemate!"
             );
 
+        } else if (isKingInCheck(false)) {
+
+            System.out.println("Black King is in CHECK!");
+
         }
+
+    }
+    
+    private void updateTurnDisplay() {
 
         if (gameState.getCurrentTurn() == Turn.WHITE) {
 

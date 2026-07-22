@@ -30,7 +30,7 @@ public class BoardEvaluator {
 	                    );
 	            
 	            int mobility =
-	                    piece.getLegalMoves(
+	                    piece.generateMoves(
 	                            boardState,
 	                            row,
 	                            column

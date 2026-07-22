@@ -18,7 +18,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Move> getLegalMoves(
+    public List<Move> generateMoves(
             BoardState boardState,
             int row,
             int column) {

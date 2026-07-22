@@ -16,7 +16,7 @@ public class Queen extends Piece {
     }
     
     @Override
-    public List<Move> getLegalMoves(
+    public List<Move>generateMoves(
             BoardState boardState,
             int row,
             int column) {
@@ -24,10 +24,10 @@ public class Queen extends Piece {
         List<Move> moves = new ArrayList<>();
 
         Rook rook = new Rook(isWhite());
-        moves.addAll(rook.getLegalMoves(boardState, row, column));
+        moves.addAll(rook.generateMoves(boardState, row, column));
 
         Bishop bishop = new Bishop(isWhite());
-        moves.addAll(bishop.getLegalMoves(boardState, row, column));
+        moves.addAll(bishop.generateMoves(boardState, row, column));
 
         System.out.println("Queen moves:");
 

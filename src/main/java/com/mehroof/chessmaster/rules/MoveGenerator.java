@@ -33,7 +33,7 @@ public class MoveGenerator {
 	                continue;
 
 	            List<Move> pieceMoves =
-	                    piece.getLegalMoves(
+	                    piece.generateMoves(
 	                            board,
 	                            row,
 	                            column
