@@ -11,10 +11,13 @@ import com.mehroof.chessmaster.board.ChessSquare;
 import com.mehroof.chessmaster.move.Move;
 import com.mehroof.chessmaster.pieces.Piece;
 import com.mehroof.chessmaster.model.BoardState;
+import com.mehroof.chessmaster.rules.RuleEngine;
 
 public class MinimaxSearch implements Search {
 
 	private BoardEvaluator evaluator = new BoardEvaluator();
+	
+	private RuleEngine ruleEngine = new RuleEngine();
 	
 	private static final int SEARCH_DEPTH = 3;
 	
@@ -78,11 +81,13 @@ public class MinimaxSearch implements Search {
             int depth,
             boolean maximizingPlayer) {
 
-        if (depth == 0) {
+    	if (depth == 0
+    	        || ruleEngine.isCheckmate(board.getBoardState(), true)
+    	        || ruleEngine.isCheckmate(board.getBoardState(), false)) {
 
-        	return evaluator.evaluate(board.getBoardState());
+    	    return evaluator.evaluate(board.getBoardState());
 
-        }
+    	}
 
         if (maximizingPlayer) {
 
