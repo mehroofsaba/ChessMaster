@@ -12,14 +12,19 @@ import com.mehroof.chessmaster.move.Move;
 import com.mehroof.chessmaster.pieces.Piece;
 import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.rules.RuleEngine;
+import com.mehroof.chessmaster.ai.ordering.MoveOrdering;
 
 public class MinimaxSearch implements Search {
 
-	private BoardEvaluator evaluator = new BoardEvaluator();
-	
-	private RuleEngine ruleEngine = new RuleEngine();
+	private final BoardEvaluator evaluator = new BoardEvaluator();
+
+	private final RuleEngine ruleEngine = new RuleEngine();
+
+	private final MoveOrdering moveOrdering = new MoveOrdering();
 	
 	private static final int SEARCH_DEPTH = 3;
+	
+	private static final int CHECKMATE_SCORE = 100000;
 	
 	@Override
 	public AIMove findBestMove(ChessBoard board) {
@@ -33,6 +38,11 @@ public class MinimaxSearch implements Search {
 	                    board.getBoardState(),
 	                    false
 	            );
+	    
+	    moveOrdering.orderMoves(moves);
+	    
+	    int alpha = Integer.MIN_VALUE;
+	    int beta = Integer.MAX_VALUE;
 
 	    for (AIMove move : moves) {
 
@@ -51,9 +61,10 @@ public class MinimaxSearch implements Search {
 	                minimax(
 	                        new ChessBoard(copied),
 	                        SEARCH_DEPTH - 1,
+	                        alpha,
+	                        beta,
 	                        false
 	                );
-
 	        copied.undoMove(
 	                move.getFromRow(),
 	                move.getFromColumn(),
@@ -67,6 +78,8 @@ public class MinimaxSearch implements Search {
 	            bestScore = score;
 
 	            bestMove = move;
+	            
+	            alpha = Math.max(alpha, bestScore);
 
 	        }
 
@@ -76,18 +89,27 @@ public class MinimaxSearch implements Search {
 
 	}
     
-    private int minimax(
-            ChessBoard board,
-            int depth,
-            boolean maximizingPlayer) {
+	private int minimax(
+	        ChessBoard board,
+	        int depth,
+	        int alpha,
+	        int beta,
+	        boolean maximizingPlayer) {
 
-    	if (depth == 0
-    	        || ruleEngine.isCheckmate(board.getBoardState(), true)
-    	        || ruleEngine.isCheckmate(board.getBoardState(), false)) {
+		// White is checkmated → Black (AI) wins
+		if (ruleEngine.isCheckmate(board.getBoardState(), true)) {
+			return CHECKMATE_SCORE;
+		}
 
-    	    return evaluator.evaluate(board.getBoardState());
+		// Black is checkmated → White wins
+		if (ruleEngine.isCheckmate(board.getBoardState(), false)) {
+			return CHECKMATE_SCORE;
+		}
 
-    	}
+		// Search depth reached
+		if (depth == 0) {
+		    return evaluator.evaluate(board.getBoardState());
+		}
 
         if (maximizingPlayer) {
 
@@ -98,6 +120,8 @@ public class MinimaxSearch implements Search {
         	                board.getBoardState(),
         	                false
         	        );
+        	
+        	moveOrdering.orderMoves(moves);
         	
         	for (AIMove move : moves) {
 
@@ -112,11 +136,12 @@ public class MinimaxSearch implements Search {
         		                move.getToRow(),
         		                move.getToColumn()
         		        );
-        		
         		int score =
         		        minimax(
         		                new ChessBoard(copied),
         		                depth - 1,
+        		                alpha,
+        		                beta,
         		                false
         		        );
 
@@ -129,6 +154,12 @@ public class MinimaxSearch implements Search {
         		);
 
         		best = Math.max(best, score);
+
+        		alpha = Math.max(alpha, best);
+
+        		if (beta <= alpha) {
+        		    break;
+        		}
         		
         	}
 
@@ -144,6 +175,8 @@ public class MinimaxSearch implements Search {
                             board.getBoardState(),
                             true
                     );
+            
+            moveOrdering.orderMoves(moves);
 
             for (AIMove move : moves) {
 
@@ -162,9 +195,10 @@ public class MinimaxSearch implements Search {
                         minimax(
                                 new ChessBoard(copied),
                                 depth - 1,
+                                alpha,
+                                beta,
                                 true
                         );
-
                 copied.undoMove(
                         move.getFromRow(),
                         move.getFromColumn(),
@@ -174,6 +208,12 @@ public class MinimaxSearch implements Search {
                 );
 
                 best = Math.min(best, score);
+
+                beta = Math.min(beta, best);
+
+                if (beta <= alpha) {
+                    break;
+                }
 
             }
 
@@ -185,6 +225,8 @@ public class MinimaxSearch implements Search {
     private List<AIMove> generateMoves(
             BoardState board,
             boolean white) {
+    	
+    	
 
         List<AIMove> moves = new ArrayList<>();
 
