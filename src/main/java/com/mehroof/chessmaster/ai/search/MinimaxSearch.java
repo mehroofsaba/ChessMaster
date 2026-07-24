@@ -26,6 +26,9 @@ public class MinimaxSearch implements Search {
 	
 	private static final int CHECKMATE_SCORE = 100000;
 	
+	private KillerMoves killerMoves =
+	        new KillerMoves();
+	
 	@Override
 	public AIMove findBestMove(ChessBoard board) {
 
@@ -39,7 +42,12 @@ public class MinimaxSearch implements Search {
 	                    false
 	            );
 	    
-	    moveOrdering.orderMoves(moves);
+
+	    moveOrdering.orderMoves(
+	            moves,
+	            killerMoves,
+	            SEARCH_DEPTH
+	    );
 	    
 	    int alpha = Integer.MIN_VALUE;
 	    int beta = Integer.MAX_VALUE;
@@ -96,16 +104,7 @@ public class MinimaxSearch implements Search {
 	        int beta,
 	        boolean maximizingPlayer) {
 
-		// White is checkmated → Black (AI) wins
-		if (ruleEngine.isCheckmate(board.getBoardState(), true)) {
-			return CHECKMATE_SCORE;
-		}
-
-		// Black is checkmated → White wins
-		if (ruleEngine.isCheckmate(board.getBoardState(), false)) {
-			return CHECKMATE_SCORE;
-		}
-
+		
 		// Search depth reached
 		if (depth == 0) {
 		    return evaluator.evaluate(board.getBoardState());
@@ -120,8 +119,12 @@ public class MinimaxSearch implements Search {
         	                board.getBoardState(),
         	                false
         	        );
-        	
-        	moveOrdering.orderMoves(moves);
+
+        	moveOrdering.orderMoves(
+        	        moves,
+        	        killerMoves,
+        	        depth
+        	);
         	
         	for (AIMove move : moves) {
 
@@ -158,6 +161,9 @@ public class MinimaxSearch implements Search {
         		alpha = Math.max(alpha, best);
 
         		if (beta <= alpha) {
+
+        		    killerMoves.addKillerMove(depth, move);
+
         		    break;
         		}
         		
@@ -173,10 +179,14 @@ public class MinimaxSearch implements Search {
             List<AIMove> moves =
                     generateMoves(
                             board.getBoardState(),
-                            true
+                            false
                     );
-            
-            moveOrdering.orderMoves(moves);
+
+            moveOrdering.orderMoves(
+                    moves,
+                    killerMoves,
+                    depth
+            );
 
             for (AIMove move : moves) {
 
@@ -212,6 +222,9 @@ public class MinimaxSearch implements Search {
                 beta = Math.min(beta, best);
 
                 if (beta <= alpha) {
+
+                    killerMoves.addKillerMove(depth, move);
+
                     break;
                 }
 
