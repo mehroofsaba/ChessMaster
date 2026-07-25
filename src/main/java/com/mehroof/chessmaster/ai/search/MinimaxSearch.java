@@ -26,7 +26,7 @@ public class MinimaxSearch implements Search {
 	
 	private static final int CHECKMATE_SCORE = 100000;
 	
-	private KillerMoves killerMoves =
+	private final KillerMoves killerMoves =
 	        new KillerMoves();
 	
 	@Override
@@ -104,21 +104,30 @@ public class MinimaxSearch implements Search {
 	        int beta,
 	        boolean maximizingPlayer) {
 
-		
-		// Search depth reached
-		if (depth == 0) {
-		    return evaluator.evaluate(board.getBoardState());
-		}
+	    // White is checkmated -> AI (Black) wins
+	    if (ruleEngine.isCheckmate(board.getBoardState(), true)) {
+	        return CHECKMATE_SCORE;
+	    }
+
+	    // Black is checkmated -> AI loses
+	    if (ruleEngine.isCheckmate(board.getBoardState(), false)) {
+	        return -CHECKMATE_SCORE;
+	    }
+
+	    // Search depth reached
+	    if (depth == 0) {
+	        return evaluator.evaluate(board.getBoardState());
+	    }
 
         if (maximizingPlayer) {
 
         	int best = Integer.MIN_VALUE;
 
         	List<AIMove> moves =
-        	        generateMoves(
-        	                board.getBoardState(),
-        	                false
-        	        );
+        			generateMoves(
+        			        board.getBoardState(),
+        			        false
+        			);
 
         	moveOrdering.orderMoves(
         	        moves,
@@ -179,7 +188,7 @@ public class MinimaxSearch implements Search {
             List<AIMove> moves =
                     generateMoves(
                             board.getBoardState(),
-                            false
+                            true
                     );
 
             moveOrdering.orderMoves(
