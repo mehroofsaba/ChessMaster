@@ -13,6 +13,7 @@ import com.mehroof.chessmaster.pieces.Piece;
 import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.rules.RuleEngine;
 import com.mehroof.chessmaster.ai.ordering.MoveOrdering;
+import com.mehroof.chessmaster.ai.hash.ZobristHash;
 
 public class MinimaxSearch implements Search {
 
@@ -28,6 +29,9 @@ public class MinimaxSearch implements Search {
 	
 	private final KillerMoves killerMoves =
 	        new KillerMoves();
+	
+	private final TranspositionTable transpositionTable =
+	        new TranspositionTable();
 	
 	@Override
 	public AIMove findBestMove(ChessBoard board) {
@@ -113,6 +117,15 @@ public class MinimaxSearch implements Search {
 	    if (ruleEngine.isCheckmate(board.getBoardState(), false)) {
 	        return -CHECKMATE_SCORE;
 	    }
+	    
+	    long hash = ZobristHash.computeHash(board.getBoardState());
+
+	    TranspositionEntry entry =
+	            transpositionTable.get(hash);
+
+	    if (entry != null && entry.getDepth() >= depth) {
+	        return entry.getScore();
+	    }
 
 	    // Search depth reached
 	    if (depth == 0) {
@@ -176,9 +189,17 @@ public class MinimaxSearch implements Search {
         		    break;
         		}
         		
+        		
         	}
+        	
+        	transpositionTable.put(
+        	        hash,
+        	        new TranspositionEntry(depth, best)
+        	);
 
         	return best;
+
+        	
         } 
         
         else {
