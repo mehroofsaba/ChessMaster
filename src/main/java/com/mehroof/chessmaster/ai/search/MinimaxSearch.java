@@ -14,6 +14,7 @@ import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.rules.RuleEngine;
 import com.mehroof.chessmaster.ai.ordering.MoveOrdering;
 import com.mehroof.chessmaster.ai.hash.ZobristHash;
+import com.mehroof.chessmaster.ai.book.OpeningBook;
 
 public class MinimaxSearch implements Search {
 
@@ -33,8 +34,22 @@ public class MinimaxSearch implements Search {
 	private final TranspositionTable transpositionTable =
 	        new TranspositionTable();
 	
+	private final OpeningBook openingBook =
+	        new OpeningBook();
+	
 	@Override
 	public AIMove findBestMove(ChessBoard board) {
+		
+		AIMove bookMove =
+		        openingBook.getBookMove(
+		                board.getBoardState()
+		        );
+
+		if (bookMove != null) {
+
+		    return bookMove;
+
+		}
 
 	    int bestScore = Integer.MIN_VALUE;
 
