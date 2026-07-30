@@ -612,7 +612,11 @@ public class GameController {
             return;
         }
 
-        MoveRecord lastMove = gameState.getLastMove();
+        List<MoveRecord> history = gameState.getMoveHistory();
+
+        MoveRecord lastMove = history.isEmpty()
+                ? null
+                : history.get(history.size() - 1);
 
         if (lastMove == null) {
             return;
