@@ -161,7 +161,7 @@ public class GameController {
             return;
         }
 
-        gameState.setLastMove(
+        gameState.addMove(
                 new MoveRecord(
                         movingPiece,
                         selectedSquare.getRow(),

@@ -2,11 +2,17 @@ package com.mehroof.chessmaster.model;
 
 import com.mehroof.chessmaster.model.MoveRecord;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameState {
 
     private Turn currentTurn;
     
     private MoveRecord lastMove;
+
+    private final List<MoveRecord> moveHistory =
+            new ArrayList<>();
 
     public GameState() {
 
@@ -40,6 +46,18 @@ public class GameState {
 
     public void setLastMove(MoveRecord lastMove) {
         this.lastMove = lastMove;
+    }
+    
+    public void addMove(MoveRecord move) {
+
+        lastMove = move;
+
+        moveHistory.add(move);
+
+    }
+    
+    public List<MoveRecord> getMoveHistory() {
+        return moveHistory;
     }
     
 }
