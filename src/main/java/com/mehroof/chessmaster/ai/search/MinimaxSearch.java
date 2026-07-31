@@ -24,7 +24,7 @@ public class MinimaxSearch implements Search {
 
 	private final MoveOrdering moveOrdering = new MoveOrdering();
 	
-	private static final int SEARCH_DEPTH = 3;
+	private static final int MAX_DEPTH = 5;
 	
 	private static final int CHECKMATE_SCORE = 100000;
 	
@@ -52,7 +52,7 @@ public class MinimaxSearch implements Search {
 	    AIMove bestMove = null;
 
 	    for (int currentDepth = 1;
-	         currentDepth <= SEARCH_DEPTH;
+	    		currentDepth <= MAX_DEPTH;
 	         currentDepth++) {
 
 	        int bestScore = Integer.MIN_VALUE;
@@ -122,6 +122,8 @@ public class MinimaxSearch implements Search {
 
 	    return bestMove;
 	}
+	
+
     
 	private int minimax(
 	        ChessBoard board,
