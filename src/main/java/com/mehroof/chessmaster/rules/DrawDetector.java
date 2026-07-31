@@ -16,6 +16,7 @@ public class DrawDetector {
 	public boolean isStalemate(
 	        BoardState board,
 	        boolean whiteTurn) {
+		
 
 	    if (checkDetector.isKingInCheck(
 	            board,
@@ -32,6 +33,24 @@ public class DrawDetector {
 	            );
 
 	    return moves.isEmpty();
+	    
+	}
+	
+	public boolean isInsufficientMaterial(BoardState board) {
+
+	    return false;
+
+	}
+
+	public boolean isFiftyMoveRule() {
+
+	    return false;
+
+	}
+
+	public boolean isThreefoldRepetition() {
+
+	    return false;
 
 	}
 	

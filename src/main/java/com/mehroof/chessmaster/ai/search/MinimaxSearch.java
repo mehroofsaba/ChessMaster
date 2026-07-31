@@ -151,9 +151,9 @@ public class MinimaxSearch implements Search {
 	        return entry.getScore();
 	    }
 
-	    // Search depth reached
+	 // Search depth reached
 	    if (depth == 0) {
-	        return evaluator.evaluate(board.getBoardState());
+	        return quiescence(board, alpha, beta);
 	    }
 
         if (maximizingPlayer) {
@@ -303,6 +303,62 @@ public class MinimaxSearch implements Search {
 
 	    if (alpha < standPat) {
 	        alpha = standPat;
+	    }
+
+	    List<AIMove> moves =
+	            generateMoves(
+	                    board.getBoardState(),
+	                    false
+	            );
+	    
+	    moves.removeIf(move -> {
+
+	        Piece target =
+	                board.getBoardState()
+	                     .getSquare(
+	                             move.getToRow(),
+	                             move.getToColumn())
+	                     .getPiece();
+
+	        return target == null;
+
+	    });
+	    
+	    for (AIMove move : moves) {
+
+	        BoardState copied =
+	                board.getBoardState().copy();
+
+	        Piece captured =
+	                copied.movePiece(
+	                        move.getFromRow(),
+	                        move.getFromColumn(),
+	                        move.getToRow(),
+	                        move.getToColumn()
+	                );
+
+	        int score =
+	                -quiescence(
+	                        new ChessBoard(copied),
+	                        -beta,
+	                        -alpha
+	                );
+
+	        copied.undoMove(
+	                move.getFromRow(),
+	                move.getFromColumn(),
+	                move.getToRow(),
+	                move.getToColumn(),
+	                captured
+	        );
+
+	        if (score >= beta) {
+	            return beta;
+	        }
+
+	        if (score > alpha) {
+	            alpha = score;
+	        }
 	    }
 
 	    return alpha;

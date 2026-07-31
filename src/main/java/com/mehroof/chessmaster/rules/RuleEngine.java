@@ -72,5 +72,30 @@ public class RuleEngine {
 
 	}
 	
+	public boolean isStalemate(
+	        BoardState board,
+	        boolean whiteTurn) {
+
+	    return drawDetector.isStalemate(
+	            board,
+	            whiteTurn
+	    );
+	}
+
+	public boolean isDrawByInsufficientMaterial(
+	        BoardState board) {
+
+	    return drawDetector.isInsufficientMaterial(board);
+	}
+
+	public boolean isDrawByFiftyMoveRule() {
+
+	    return drawDetector.isFiftyMoveRule();
+	}
+
+	public boolean isDrawByThreefoldRepetition() {
+
+	    return drawDetector.isThreefoldRepetition();
+	}
 	
 }

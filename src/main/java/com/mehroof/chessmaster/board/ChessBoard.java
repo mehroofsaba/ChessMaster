@@ -127,6 +127,10 @@ public class ChessBoard extends GridPane {
         
         Piece capturedPiece = to.getPiece();
         
+        if (capturedPiece instanceof King) {
+            return false;
+        }
+        
      // En Passant
         if (movingPiece instanceof Pawn
                 && capturedPiece == null

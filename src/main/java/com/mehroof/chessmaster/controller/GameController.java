@@ -28,7 +28,8 @@ public class GameController {
     private GameState gameState;
     private StatusBar statusBar;
     private ChessAI ai = new ChessAI();
-
+    private boolean gameOver = false;
+    
     public GameController(
             ChessBoard board,
             StatusBar statusBar
@@ -68,6 +69,10 @@ public class GameController {
     }
 
     private void selectSquare(ChessSquare square) {
+    	
+    	if (gameOver) {
+    	    return;
+    	}
 
     	// First click: select a piece
     	if (selectedSquare == null) {
@@ -717,17 +722,21 @@ public class GameController {
 
         if (isCheckmate(true)) {
 
-            GameOverDialog.show(
-                    "Checkmate",
-                    "Black Wins!"
-            );
+        	gameOver = true;
+
+        	GameOverDialog.show(
+        	        "Checkmate",
+        	        "Black Wins!"
+        	);
 
         } else if (isStalemate(true)) {
 
-            GameOverDialog.show(
-                    "Draw",
-                    "Stalemate!"
-            );
+        	gameOver = true;
+
+        	GameOverDialog.show(
+        	        "Draw",
+        	        "Stalemate!"
+        	);
 
         } else if (isKingInCheck(true)) {
 
@@ -741,23 +750,44 @@ public class GameController {
 
         if (isCheckmate(false)) {
 
-            GameOverDialog.show(
-                    "Checkmate",
-                    "White Wins!"
-            );
+        	gameOver = true;
+
+        	GameOverDialog.show(
+        	        "Checkmate",
+        	        "White Wins!"
+        	);
 
         } else if (isStalemate(false)) {
 
-            GameOverDialog.show(
-                    "Draw",
-                    "Stalemate!"
-            );
+        	gameOver = true;
+
+        	GameOverDialog.show(
+        	        "Draw",
+        	        "Stalemate!"
+        	);
 
         } else if (isKingInCheck(false)) {
 
             System.out.println("Black King is in CHECK!");
 
         }
+        
+        System.out.println("Checking black state...");
+
+        System.out.println(
+            "Black in check = " +
+            isKingInCheck(false)
+        );
+
+        System.out.println(
+            "Black checkmate = " +
+            isCheckmate(false)
+        );
+
+        System.out.println(
+            "Black stalemate = " +
+            isStalemate(false)
+        );
 
     }
     
