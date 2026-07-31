@@ -39,81 +39,88 @@ public class MinimaxSearch implements Search {
 	
 	@Override
 	public AIMove findBestMove(ChessBoard board) {
-		
-		AIMove bookMove =
-		        openingBook.getBookMove(
-		                board.getBoardState()
-		        );
 
-		if (bookMove != null) {
+	    String position = "";
 
-		    return bookMove;
+	    AIMove bookMove =
+	            openingBook.getBookMove(position);
 
-		}
-
-	    int bestScore = Integer.MIN_VALUE;
+	    if (bookMove != null) {
+	        return bookMove;
+	    }
 
 	    AIMove bestMove = null;
 
-	    List<AIMove> moves =
-	            generateMoves(
-	                    board.getBoardState(),
-	                    false
-	            );
-	    
+	    for (int currentDepth = 1;
+	         currentDepth <= SEARCH_DEPTH;
+	         currentDepth++) {
 
-	    moveOrdering.orderMoves(
-	            moves,
-	            killerMoves,
-	            SEARCH_DEPTH
-	    );
-	    
-	    int alpha = Integer.MIN_VALUE;
-	    int beta = Integer.MAX_VALUE;
+	        int bestScore = Integer.MIN_VALUE;
 
-	    for (AIMove move : moves) {
-
-	        BoardState copied =
-	                board.getBoardState().copy();
-
-	        Piece captured =
-	                copied.movePiece(
-	                        move.getFromRow(),
-	                        move.getFromColumn(),
-	                        move.getToRow(),
-	                        move.getToColumn()
-	                );
-
-	        int score =
-	                minimax(
-	                        new ChessBoard(copied),
-	                        SEARCH_DEPTH - 1,
-	                        alpha,
-	                        beta,
+	        List<AIMove> moves =
+	                generateMoves(
+	                        board.getBoardState(),
 	                        false
 	                );
-	        copied.undoMove(
-	                move.getFromRow(),
-	                move.getFromColumn(),
-	                move.getToRow(),
-	                move.getToColumn(),
-	                captured
+
+	        moveOrdering.orderMoves(
+	                moves,
+	                killerMoves,
+	                currentDepth
 	        );
 
-	        if (score > bestScore) {
+	        int alpha = Integer.MIN_VALUE;
+	        int beta = Integer.MAX_VALUE;
 
-	            bestScore = score;
+	        for (AIMove move : moves) {
 
-	            bestMove = move;
-	            
+	            BoardState copied =
+	                    board.getBoardState().copy();
+
+	            Piece captured =
+	                    copied.movePiece(
+	                            move.getFromRow(),
+	                            move.getFromColumn(),
+	                            move.getToRow(),
+	                            move.getToColumn()
+	                    );
+
+	            int score =
+	                    minimax(
+	                            new ChessBoard(copied),
+	                            currentDepth - 1,
+	                            alpha,
+	                            beta,
+	                            false
+	                    );
+
+	            copied.undoMove(
+	                    move.getFromRow(),
+	                    move.getFromColumn(),
+	                    move.getToRow(),
+	                    move.getToColumn(),
+	                    captured
+	            );
+
+	            if (score > bestScore) {
+
+	                bestScore = score;
+
+	                bestMove = move;
+	            }
+
 	            alpha = Math.max(alpha, bestScore);
-
 	        }
 
+	        System.out.println(
+	                "Depth "
+	                + currentDepth
+	                + " completed. Best score = "
+	                + bestScore
+	        );
 	    }
 
 	    return bestMove;
-
 	}
     
 	private int minimax(

@@ -4,13 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mehroof.chessmaster.ai.AIMove;
-import com.mehroof.chessmaster.ai.hash.ZobristHash;
-import com.mehroof.chessmaster.model.BoardState;
 
 public class OpeningBook {
 
-    private final Map<Long, AIMove> openings =
-            new HashMap<>();
+	private final Map<String, AIMove> openings =
+	        new HashMap<>();
 
     public OpeningBook() {
 
@@ -20,14 +18,35 @@ public class OpeningBook {
     
     private void loadOpenings() {
 
+        // 1. e4 -> ...e5
+        openings.put(
+                "e2e4",
+                new AIMove(1, 4, 3, 4)
+        );
+
+        // 1. d4 -> ...d5
+        openings.put(
+                "d2d4",
+                new AIMove(1, 3, 3, 3)
+        );
+
+        // 1. c4 -> ...e5
+        openings.put(
+                "c2c4",
+                new AIMove(1, 4, 3, 4)
+        );
+
+        // 1. Nf3 -> ...d5
+        openings.put(
+                "g1f3",
+                new AIMove(1, 3, 3, 3)
+        );
+
     }
 
-    public AIMove getBookMove(BoardState board) {
+    public AIMove getBookMove(String position) {
 
-        long hash =
-                ZobristHash.computeHash(board);
-
-        return openings.get(hash);
+        return openings.get(position);
 
     }
 
