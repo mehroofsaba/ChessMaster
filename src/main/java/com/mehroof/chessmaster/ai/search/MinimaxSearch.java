@@ -288,6 +288,25 @@ public class MinimaxSearch implements Search {
 
         }
     }
+	
+	private int quiescence(
+	        ChessBoard board,
+	        int alpha,
+	        int beta) {
+
+	    int standPat =
+	            evaluator.evaluate(board.getBoardState());
+
+	    if (standPat >= beta) {
+	        return beta;
+	    }
+
+	    if (alpha < standPat) {
+	        alpha = standPat;
+	    }
+
+	    return alpha;
+	}
     
     private List<AIMove> generateMoves(
             BoardState board,
