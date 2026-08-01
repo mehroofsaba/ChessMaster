@@ -2,6 +2,9 @@ package com.mehroof.chessmaster.rules;
 
 import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.move.Move;
+import com.mehroof.chessmaster.pieces.Piece;
+import com.mehroof.chessmaster.pieces.King;
+import com.mehroof.chessmaster.pieces.Piece;
 
 public class MoveValidator {
 	
@@ -15,8 +18,10 @@ public class MoveValidator {
 	        Move move,
 	        boolean whiteTurn) {
 
-	    BoardState copied =
-	            board.copy();
+	    BoardState copied = board.copy();
+
+	    Piece movingPiece =
+	            board.getSquare(fromRow, fromColumn).getPiece();
 
 	    copied.movePiece(
 	            fromRow,
@@ -25,10 +30,24 @@ public class MoveValidator {
 	            move.getColumn()
 	    );
 
+	    if (movingPiece instanceof King) {
+
+	        System.out.println(
+	                "Testing king move to "
+	                + move.getRow() + ","
+	                + move.getColumn());
+
+	        boolean inCheck =
+	                detector.isKingInCheck(copied, whiteTurn);
+
+	        System.out.println(
+	                "King in check after move = "
+	                + inCheck);
+	    }
+
 	    return !detector.isKingInCheck(
 	            copied,
 	            whiteTurn
 	    );
 	}
-
 }

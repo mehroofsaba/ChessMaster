@@ -142,6 +142,12 @@ public class MinimaxSearch implements Search {
 	        return -CHECKMATE_SCORE;
 	    }
 	    
+	    if(ruleEngine.isStalemate(board.getBoardState(), true))
+	        return 0;
+
+	    if(ruleEngine.isStalemate(board.getBoardState(), false))
+	        return 0;
+	    
 	    long hash = ZobristHash.computeHash(board.getBoardState());
 
 	    TranspositionEntry entry =
@@ -389,26 +395,33 @@ public class MinimaxSearch implements Search {
                 if (piece.isWhite() != white)
                     continue;
 
-                List<Move> legalMoves =
+                List<Move> pseudoMoves =
                         piece.generateMoves(
                                 boardState,
                                 row,
                                 column
                         );
 
-                for (Move move : legalMoves) {
+                for (Move move : pseudoMoves) {
 
-                    
+                    if (!ruleEngine.isMoveLegal(
+                            boardState,
+                            row,
+                            column,
+                            move,
+                            white)) {
+
+                        continue;
+                    }
 
                     moves.add(
-                    	    new AIMove(
-                    	        row,
-                    	        column,
-                    	        move.getRow(),
-                    	        move.getColumn()
-                    	    )
-                    	);
-
+                        new AIMove(
+                                row,
+                                column,
+                                move.getRow(),
+                                move.getColumn()
+                        )
+                    );
                 }
 
             }
