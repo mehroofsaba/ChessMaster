@@ -36,13 +36,27 @@ public class Bishop extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(currentRow, currentColumn));
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        currentRow,
+            		        currentColumn
+            		    )
+            		);
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(currentRow, currentColumn));
+                	moves.add(
+                		    new Move(
+                		        row,
+                		        column,
+                		        currentRow,
+                		        currentColumn
+                		    )
+                		);
                     
                         }
 
@@ -63,13 +77,27 @@ public class Bishop extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(currentRow, currentColumn));
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        currentRow,
+            		        currentColumn
+            		    )
+            		);
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(currentRow, currentColumn));
+                	moves.add(
+                		    new Move(
+                		        row,
+                		        column,
+                		        currentRow,
+                		        currentColumn
+                		    )
+                		);
 
                 }
 
@@ -97,13 +125,27 @@ public class Bishop extends Piece {
         	);
             if (target == null) {
 
-                moves.add(new Move(currentRow, currentColumn));
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        currentRow,
+            		        currentColumn
+            		    )
+            		);
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(currentRow, currentColumn));
+                	moves.add(
+                		    new Move(
+                		        row,
+                		        column,
+                		        currentRow,
+                		        currentColumn
+                		    )
+                		);
 
                 }
 
@@ -124,13 +166,26 @@ public class Bishop extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(currentRow, currentColumn));
-
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        currentRow,
+            		        currentColumn
+            		    )
+            		);
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(currentRow, currentColumn));
+                	moves.add(
+                		    new Move(
+                		        row,
+                		        column,
+                		        currentRow,
+                		        currentColumn
+                		    )
+                		);
 
                 }
 

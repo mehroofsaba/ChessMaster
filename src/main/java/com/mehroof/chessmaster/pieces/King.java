@@ -53,11 +53,21 @@ public class King extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(newRow, newColumn));
+            	new Move(
+            		    row,
+            		    column,
+            		    newRow,
+            		    newColumn
+            		);
 
             } else if (target.isWhite() != isWhite()) {
 
-                moves.add(new Move(newRow, newColumn));
+            	new Move(
+            		    row,
+            		    column,
+            		    newRow,
+            		    newColumn
+            		);
 
             }
         }
@@ -72,7 +82,12 @@ public class King extends Piece {
                     && boardState.getSquare(row, 5).getPiece() == null
                     && boardState.getSquare(row, 6).getPiece() == null) {
 
-                moves.add(new Move(row, 6));
+            	new Move(
+            		    row,
+            		    column,
+            		    row,
+            		    6
+            		);
             }
 
             // Queenside castling
@@ -84,7 +99,12 @@ public class King extends Piece {
                     && boardState.getSquare(row, 2).getPiece() == null
                     && boardState.getSquare(row, 3).getPiece() == null) {
 
-                moves.add(new Move(row, 2));
+            	new Move(
+            		    row,
+            		    column,
+            		    row,
+            		    2
+            		);
             }
         }         
         

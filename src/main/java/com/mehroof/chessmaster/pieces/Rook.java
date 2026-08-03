@@ -38,13 +38,23 @@ public class Rook extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(currentRow, column));
+            	moves.add(new Move(
+            	        row,
+            	        column,
+            	        currentRow,
+            	        column
+            	));
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(currentRow, column));
+                	moves.add(new Move(
+                	        row,
+                	        column,
+                	        currentRow,
+                	        column
+                	));
 
                 }
 
@@ -66,14 +76,23 @@ public class Rook extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(currentRow, column));
+            	moves.add(new Move(
+            	        row,
+            	        column,
+            	        currentRow,
+            	        column
+            	));
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(currentRow, column));
-
+                	moves.add(new Move(
+                	        row,
+                	        column,
+                	        currentRow,
+                	        column
+                	));
                 }
 
                 break;
@@ -91,14 +110,23 @@ public class Rook extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(row, currentColumn));
-
+            	moves.add(new Move(
+            	        row,
+            	        column,
+            	        currentRow,
+            	        column
+            	));
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(row, currentColumn));
-
+                	moves.add(new Move(
+                	        row,
+                	        column,
+                	        currentRow,
+                	        column
+                	));
+                	
                 }
 
                 break;
@@ -117,13 +145,23 @@ public class Rook extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(row, currentColumn));
+            	moves.add(new Move(
+            	        row,
+            	        column,
+            	        currentRow,
+            	        column
+            	));
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(row, currentColumn));
+                	moves.add(new Move(
+                	        row,
+                	        column,
+                	        currentRow,
+                	        column
+                	));
 
                 }
 

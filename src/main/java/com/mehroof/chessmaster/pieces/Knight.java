@@ -53,11 +53,25 @@ public class Knight extends Piece {
 
             if (target == null) {
 
-                moves.add(new Move(newRow, newColumn));
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        newRow,
+            		        newColumn
+            		    )
+            		);
 
             } else if (target.isWhite() != isWhite()) {
 
-                moves.add(new Move(newRow, newColumn));
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        newRow,
+            		        newColumn
+            		    )
+            		);
 
             }
         }

@@ -39,8 +39,14 @@ public class Pawn extends Piece {
             if (boardState.getSquare(nextRow, column).getPiece() == null) {
 
                 // Normal one-square move
-                moves.add(new Move(nextRow, column));
-
+            	moves.add(
+            		    new Move(
+            		        row,
+            		        column,
+            		        nextRow,
+            		        column
+            		    )
+            		);
                 // Starting position
                 int startRow = isWhite() ? 6 : 1;
 
@@ -51,7 +57,14 @@ public class Pawn extends Piece {
                     if (boardState.isInsideBoard(doubleRow, column)
                             && boardState.getSquare(doubleRow, column).getPiece() == null) {
 
-                        moves.add(new Move(doubleRow, column));
+                    	moves.add(
+                    		    new Move(
+                    		        row,
+                    		        column,
+                    		        doubleRow,
+                    		        column
+                    		    )
+                    		);
                     }
                 }
             }
@@ -69,7 +82,14 @@ public class Pawn extends Piece {
 
                 if (target != null && target.isWhite() != isWhite()) {
 
-                    moves.add(new Move(nextRow, captureColumn));
+                	moves.add(
+                		    new Move(
+                		        row,
+                		        column,
+                		        nextRow,
+                		        captureColumn
+                		    )
+                		);
 
                 }
             }

@@ -32,10 +32,9 @@ public class Queen extends Piece {
         System.out.println("Queen moves:");
 
         for (Move m : moves) {
-            System.out.println(
-                m.getRow() + "," + m.getColumn()
-            );
+            System.out.println(m);
         }
+
 
         return moves;
     }
