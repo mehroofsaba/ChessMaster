@@ -6,34 +6,30 @@ import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.move.Move;
 
 public class CheckmateDetector {
-	
-	private CheckDetector checkDetector =
-	        new CheckDetector();
 
-	private MoveGenerator moveGenerator =
-	        new MoveGenerator();
-	
-	public boolean isCheckmate(
-	        BoardState board,
-	        boolean whiteTurn) {
+    private final CheckDetector checkDetector =
+            new CheckDetector();
 
-	    if (!checkDetector.isKingInCheck(
-	            board,
-	            whiteTurn)) {
+    private final MoveGenerator moveGenerator =
+            new MoveGenerator();
 
-	        return false;
+    public boolean isCheckmate(
+            BoardState board,
+            boolean whiteTurn) {
 
-	    }
+        if (!checkDetector.isKingInCheck(
+                board,
+                whiteTurn)) {
 
-	    List<Move> moves =
-	            moveGenerator.generateMoves(
-	                    board,
-	                    whiteTurn
-	            );
+            return false;
+        }
 
-	    return moves.isEmpty();
+        List<Move> moves =
+                moveGenerator.generateMoves(
+                        board,
+                        whiteTurn
+                );
 
-	}
-
+        return moves.isEmpty();
+    }
 }
- 

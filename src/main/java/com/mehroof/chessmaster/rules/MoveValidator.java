@@ -2,52 +2,29 @@ package com.mehroof.chessmaster.rules;
 
 import com.mehroof.chessmaster.model.BoardState;
 import com.mehroof.chessmaster.move.Move;
-import com.mehroof.chessmaster.pieces.Piece;
-import com.mehroof.chessmaster.pieces.King;
-import com.mehroof.chessmaster.pieces.Piece;
 
 public class MoveValidator {
-	
-	private CheckDetector detector =
-	        new CheckDetector();
 
-	public boolean isLegalMove(
-	        BoardState board,
-	        int fromRow,
-	        int fromColumn,
-	        Move move,
-	        boolean whiteTurn) {
+    private final CheckDetector detector =
+            new CheckDetector();
 
-	    BoardState copied = board.copy();
+    public boolean isLegalMove(
+            BoardState board,
+            Move move,
+            boolean whiteTurn) {
 
-	    Piece movingPiece =
-	            board.getSquare(fromRow, fromColumn).getPiece();
+        BoardState copied = board.copy();
 
-	    copied.movePiece(
-	            fromRow,
-	            fromColumn,
-	            move.getRow(),
-	            move.getColumn()
-	    );
+        copied.movePiece(
+                move.getFromRow(),
+                move.getFromColumn(),
+                move.getToRow(),
+                move.getToColumn()
+        );
 
-	    if (movingPiece instanceof King) {
-
-	        System.out.println(
-	                "Testing king move to "
-	                + move.getRow() + ","
-	                + move.getColumn());
-
-	        boolean inCheck =
-	                detector.isKingInCheck(copied, whiteTurn);
-
-	        System.out.println(
-	                "King in check after move = "
-	                + inCheck);
-	    }
-
-	    return !detector.isKingInCheck(
-	            copied,
-	            whiteTurn
-	    );
-	}
+        return !detector.isKingInCheck(
+                copied,
+                whiteTurn
+        );
+    }
 }

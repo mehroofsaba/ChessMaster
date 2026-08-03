@@ -10,63 +10,55 @@ import com.mehroof.chessmaster.pieces.Piece;
 
 public class LegalMoveGenerator {
 
-    private CheckDetector checkDetector =
-            new CheckDetector();
+    private final MoveValidator validator =
+            new MoveValidator();
 
     public List<Move> generateLegalMoves(
             BoardState board,
             boolean whiteTurn) {
 
-    	List<Move> legalMoves = new ArrayList<>();
+        List<Move> legalMoves = new ArrayList<>();
 
-    	for (int row = 0; row < 8; row++) {
+        for (int row = 0; row < 8; row++) {
 
-    	    for (int column = 0; column < 8; column++) {
+            for (int column = 0; column < 8; column++) {
 
-    	        ChessSquare square =
-    	                board.getSquare(row, column);
+                ChessSquare square =
+                        board.getSquare(row, column);
 
-    	        Piece piece = square.getPiece();
+                Piece piece = square.getPiece();
 
-    	        if (piece == null)
-    	            continue;
+                if (piece == null)
+                    continue;
 
-    	        if (piece.isWhite() != whiteTurn)
-    	            continue;
+                if (piece.isWhite() != whiteTurn)
+                    continue;
 
-    	        List<Move> pseudoMoves =
-    	                piece.generateMoves(
-    	                        board,
-    	                        row,
-    	                        column
-    	                );
+                List<Move> pseudoMoves =
+                        piece.generateMoves(
+                                board,
+                                row,
+                                column
+                        );
 
-    	        for (Move move : pseudoMoves) {
+                for (Move move : pseudoMoves) {
 
-    	            BoardState copy = board.copy();
+                    if (validator.isLegalMove(
+                            board,
+                            move,
+                            whiteTurn)) {
 
-    	            copy.movePiece(
-    	                    row,
-    	                    column,
-    	                    move.getRow(),
-    	                    move.getColumn()
-    	            );
+                        legalMoves.add(move);
 
-    	            if (!checkDetector.isKingInCheck(
-    	                    copy,
-    	                    whiteTurn)) {
+                    }
 
-    	                legalMoves.add(move);
+                }
 
-    	            }
+            }
 
-    	        }
+        }
 
-    	    }
-
-    	}
-
-    	return legalMoves;
+        return legalMoves;
     }
 
 }

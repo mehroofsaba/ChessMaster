@@ -7,8 +7,8 @@ import com.mehroof.chessmaster.move.Move;
 
 public class MoveGenerator {
 
-    private LegalMoveGenerator legalMoveGenerator =
-            new LegalMoveGenerator();
+	private final LegalMoveGenerator legalMoveGenerator =
+	        new LegalMoveGenerator();
 
     public List<Move> generateMoves(
             BoardState board,

@@ -7,10 +7,10 @@ import com.mehroof.chessmaster.move.Move;
 
 public class DrawDetector {
 
-	private CheckDetector checkDetector =
+	private final CheckDetector checkDetector =
 	        new CheckDetector();
 
-	private MoveGenerator moveGenerator =
+	private final MoveGenerator moveGenerator =
 	        new MoveGenerator();
 	
 	public boolean isStalemate(

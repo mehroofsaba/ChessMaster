@@ -7,32 +7,28 @@ import com.mehroof.chessmaster.move.Move;
 
 public class RuleEngine {
 
-	private MoveGenerator moveGenerator =
+	private final MoveGenerator moveGenerator =
 	        new MoveGenerator();
 
-	private MoveValidator moveValidator =
+	private final MoveValidator moveValidator =
 	        new MoveValidator();
 
-	private CheckDetector checkDetector =
+	private final CheckDetector checkDetector =
 	        new CheckDetector();
 
-	private CheckmateDetector checkmateDetector =
+	private final CheckmateDetector checkmateDetector =
 	        new CheckmateDetector();
 
-	private DrawDetector drawDetector =
+	private final DrawDetector drawDetector =
 	        new DrawDetector();
 	
 	public boolean isMoveLegal(
 	        BoardState board,
-	        int fromRow,
-	        int fromColumn,
 	        Move move,
 	        boolean whiteTurn) {
 
 	    return moveValidator.isLegalMove(
 	            board,
-	            fromRow,
-	            fromColumn,
 	            move,
 	            whiteTurn
 	    );

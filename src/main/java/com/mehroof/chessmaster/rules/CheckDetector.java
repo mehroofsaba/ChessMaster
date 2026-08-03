@@ -28,15 +28,11 @@ public class CheckDetector {
     	        ChessSquare square =
     	                board.getSquare(row, column);
 
-    	        Piece piece =
-    	                square.getPiece();
+    	        Piece piece = square.getPiece();
 
-    	        if (piece == null)
+    	        if (piece == null || piece.isWhite() == white) {
     	            continue;
-
-    	        if (piece.isWhite() == white)
-    	            continue;
-
+    	        }
     	        List<Move> attacks =
     	                piece.generateMoves(
     	                        board,
@@ -46,8 +42,8 @@ public class CheckDetector {
     	        
     	        for (Move move : attacks) {
 
-    	            if (move.getRow() == kingRow &&
-    	                move.getColumn() == kingColumn) {
+    	            if (move.getToRow() == kingRow &&
+    	                move.getToColumn() == kingColumn) {
 
     	                return true;
 
