@@ -40,14 +40,7 @@ public class MinimaxSearch implements Search {
 	@Override
 	public AIMove findBestMove(ChessBoard board) {
 
-	    String position = "";
-
-	    AIMove bookMove =
-	            openingBook.getBookMove(position);
-
-	    if (bookMove != null) {
-	        return bookMove;
-	    }
+		// Opening Book temporarily disabled
 
 	    AIMove bestMove = null;
 
@@ -159,7 +152,12 @@ public class MinimaxSearch implements Search {
 
 	 // Search depth reached
 	    if (depth == 0) {
-	        return quiescence(board, alpha, beta);
+	    	return quiescence(
+	    	        board,
+	    	        alpha,
+	    	        beta,
+	    	        !maximizingPlayer
+	    	);
 	    }
 
         if (maximizingPlayer) {
@@ -298,7 +296,8 @@ public class MinimaxSearch implements Search {
 	private int quiescence(
 	        ChessBoard board,
 	        int alpha,
-	        int beta) {
+	        int beta,
+	        boolean blackToMove) {
 
 	    int standPat =
 	            evaluator.evaluate(board.getBoardState());
@@ -314,7 +313,7 @@ public class MinimaxSearch implements Search {
 	    List<AIMove> moves =
 	            generateMoves(
 	                    board.getBoardState(),
-	                    false
+	                    !blackToMove
 	            );
 	    
 	    moves.removeIf(move -> {
@@ -344,12 +343,13 @@ public class MinimaxSearch implements Search {
 	                );
 
 	        int score =
-	                -quiescence(
-	                        new ChessBoard(copied),
-	                        -beta,
-	                        -alpha
-	                );
-
+	        	    -quiescence(
+	        	            new ChessBoard(copied),
+	        	            -beta,
+	        	            -alpha,
+	        	            !blackToMove
+	        	    );
+	        
 	        copied.undoMove(
 	                move.getFromRow(),
 	                move.getFromColumn(),
@@ -378,7 +378,7 @@ public class MinimaxSearch implements Search {
 
         List<AIMove> moves = new ArrayList<>();
 
-        BoardState boardState = board;
+        
 
         for (int row = 0; row < 8; row++) {
 
@@ -396,32 +396,30 @@ public class MinimaxSearch implements Search {
                     continue;
 
                 List<Move> pseudoMoves =
-                        piece.generateMoves(
-                                boardState,
-                                row,
-                                column
-                        );
+                		piece.generateMoves(
+                		        board,
+                		        row,
+                		        column
+                		);
 
                 for (Move move : pseudoMoves) {
 
-                    if (!ruleEngine.isMoveLegal(
-                            boardState,
-                            row,
-                            column,
-                            move,
-                            white)) {
+                	if (!ruleEngine.isMoveLegal(
+                	       board,
+                	        move,
+                	        white)) {
 
-                        continue;
-                    }
+                	    continue;
+                	}
 
-                    moves.add(
-                        new AIMove(
-                                row,
-                                column,
-                                move.getRow(),
-                                move.getColumn()
-                        )
-                    );
+                	moves.add(
+                		    new AIMove(
+                		            move.getFromRow(),
+                		            move.getFromColumn(),
+                		            move.getToRow(),
+                		            move.getToColumn()
+                		    )
+                		);
                 }
 
             }
