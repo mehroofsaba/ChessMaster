@@ -46,18 +46,12 @@ public class ChessAI {
 
 	            for (Move move : moves) {
 
-	                ChessSquare destination =
-	                        board.getSquare(
-	                                move.getRow(),
-	                                move.getColumn()
-	                        );
-
 	                possibleMoves.add(
 	                        new AIMove(
-	                                row,
-	                                column,
-	                                move.getRow(),
-	                                move.getColumn()
+	                                move.getFromRow(),
+	                                move.getFromColumn(),
+	                                move.getToRow(),
+	                                move.getToColumn()
 	                        )
 	                );
 	            }
