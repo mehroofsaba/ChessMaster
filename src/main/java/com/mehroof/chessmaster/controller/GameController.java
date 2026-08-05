@@ -114,7 +114,9 @@ public class GameController {
     	    for (Move move : legalMoves) {
 
     	        System.out.println(
-    	                move.getRow() + ", " + move.getColumn()
+    	        		move.getFromRow() + "," + move.getFromColumn()
+    	        		+ " -> " +
+    	        		move.getToRow() + "," + move.getToColumn()
     	        );
 
     	    }
@@ -200,14 +202,16 @@ public class GameController {
 
         for (Move move : legalMoves) {
 
-            if (move.getRow() == square.getRow()
-                    && move.getColumn() == square.getColumn()) {
+        	if (move.getToRow() == square.getRow()
+        	        && move.getToColumn() == square.getColumn()) {
 
-                return true;
+        	    return true;
+
+        	}
 
             }
 
-        }
+        
 
         return false;
 
@@ -217,10 +221,10 @@ public class GameController {
 
         for (Move move : legalMoves) {
 
-            ChessSquare square = board.getSquare(
-                    move.getRow(),
-                    move.getColumn()
-            );
+        	ChessSquare square = board.getSquare(
+        	        move.getToRow(),
+        	        move.getToColumn()
+        	);
 
             square.highlightMove();
 
@@ -236,10 +240,10 @@ public class GameController {
 
         for (Move move : legalMoves) {
 
-            ChessSquare square = board.getSquare(
-                    move.getRow(),
-                    move.getColumn()
-            );
+        	ChessSquare square = board.getSquare(
+        	        move.getToRow(),
+        	        move.getToColumn()
+        	);
 
             square.removeHighlight();
 
@@ -284,8 +288,8 @@ public class GameController {
 
                 for (Move move : moves) {
 
-                    if (move.getRow() == kingSquare.getRow()
-                            && move.getColumn() == kingSquare.getColumn()) {
+                	if (move.getToRow() == square.getRow()
+                	        && move.getToColumn() == square.getColumn()) {
                     	
                     	System.out.println(
                     		    piece.getClass().getSimpleName()
@@ -412,8 +416,8 @@ public class GameController {
 
                 for (Move move : moves) {
 
-                    if (move.getRow() == row
-                            && move.getColumn() == column) {
+                    if (move.getToRow() == row
+                            && move.getToColumn() == column) {
 
                         return true;
 
@@ -474,16 +478,16 @@ public class GameController {
                     		    "Trying "
                     		    + piece.getClass().getSimpleName()
                     		    + " -> "
-                    		    + move.getRow()
+                    		    + move.getToRow()
                     		    + ","
-                    		    + move.getColumn()
+                    		    + move.getToColumn()
                     		);
 
                         System.out.println(
                                 " -> "
-                                + move.getRow()
+                                + move.getToRow()
                                 + ","
-                                + move.getColumn()
+                                + move.getToColumn()
                         );
                     }
                 }
@@ -492,15 +496,15 @@ public class GameController {
 
                 	ChessSquare destination =
                 	        boardState.getSquare(
-                	            move.getRow(),
-                	            move.getColumn()
+                	            move.getToRow(),
+                	            move.getToColumn()
                 	        );
 
                     boolean safe = isMoveSafe(square, destination);
 
                     System.out.println(
                     	    "Move "
-                    	    + move.getRow() + "," + move.getColumn()
+                    	    + move.getToRow() + "," + move.getToColumn()
                     	    + " safe = "
                     	    + safe
                     	);
@@ -508,9 +512,9 @@ public class GameController {
                     System.out.println(
                             piece.getSymbol()
                             + " -> "
-                            + move.getRow()
+                            + move.getToRow()
                             + ", "
-                            + move.getColumn()
+                            + move.getToColumn()
                             + " safe = "
                             + safe
                     );
@@ -520,7 +524,7 @@ public class GameController {
                         System.out.println("LEGAL MOVE FOUND!");
                         System.out.println("Piece = " + piece.getClass().getSimpleName());
                         System.out.println("From = " + row + ", " + column);
-                        System.out.println("To = " + move.getRow() + ", " + move.getColumn());
+                        System.out.println("To = " + move.getToRow() + ", " + move.getToColumn());
 
                         return true;
 
@@ -565,7 +569,7 @@ public class GameController {
         	Piece piece = fromSquare.getPiece();
 
         	if (piece instanceof King
-        	        && Math.abs(move.getColumn() - fromSquare.getColumn()) == 2) {
+        	        && Math.abs(move.getToColumn() - fromSquare.getColumn()) == 2) {
 
         	    // King cannot castle while already in check
         	    if (isKingInCheck(boardState, piece.isWhite())) {
@@ -577,16 +581,16 @@ public class GameController {
         	copy.movePiece(
         	        fromSquare.getRow(),
         	        fromSquare.getColumn(),
-        	        move.getRow(),
-        	        move.getColumn()
+        	        move.getToRow(),
+        	        move.getToColumn()
         	);
 
         	// Extra castling validation
         	if (piece instanceof King
-        	        && Math.abs(move.getColumn() - fromSquare.getColumn()) == 2) {
+        	        && Math.abs(move.getToColumn() - fromSquare.getColumn()) == 2) {
 
         	    int middleColumn =
-        	            (fromSquare.getColumn() + move.getColumn()) / 2;
+        	            (fromSquare.getColumn() + move.getToColumn()) / 2;
 
         	    if (isSquareAttacked(
         	            fromSquare.getRow(),
@@ -656,6 +660,8 @@ public class GameController {
 
         legalMoves.add(
                 new Move(
+                        square.getRow(),
+                        square.getColumn(),
                         square.getRow() + direction,
                         lastMove.getToColumn()
                 )
