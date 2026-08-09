@@ -240,15 +240,26 @@ public class GameController {
 
         for (Move move : legalMoves) {
 
-        	ChessSquare square = board.getSquare(
-        	        move.getToRow(),
-        	        move.getToColumn()
-        	);
+            System.out.println(
+                    "CLEAR HIGHLIGHT MOVE: "
+                    + move
+            );
+
+            int row = move.getToRow();
+            int column = move.getToColumn();
+
+            System.out.println(
+                    "Destination = "
+                    + row
+                    + ", "
+                    + column
+            );
+
+            ChessSquare square =
+                    board.getSquare(row, column);
 
             square.removeHighlight();
-
         }
-
     }
     
     private boolean isKingInCheck(boolean white) {
