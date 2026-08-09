@@ -67,7 +67,6 @@ public class Rook extends Piece {
         
         currentRow = row + 1;
 
-        currentRow = row + 1;
 
         while (boardState.isInsideBoard(currentRow, column)) {
 
@@ -110,23 +109,23 @@ public class Rook extends Piece {
 
             if (target == null) {
 
-            	moves.add(new Move(
-            	        row,
-            	        column,
-            	        currentRow,
-            	        column
-            	));
+                moves.add(new Move(
+                        row,
+                        column,
+                        row,
+                        currentColumn
+                ));
+
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                	moves.add(new Move(
-                	        row,
-                	        column,
-                	        currentRow,
-                	        column
-                	));
-                	
+                    moves.add(new Move(
+                            row,
+                            column,
+                            row,
+                            currentColumn
+                    ));
                 }
 
                 break;
@@ -134,7 +133,6 @@ public class Rook extends Piece {
 
             currentColumn--;
         }
-          
             
         currentColumn = column + 1;
 
@@ -145,24 +143,23 @@ public class Rook extends Piece {
 
             if (target == null) {
 
-            	moves.add(new Move(
-            	        row,
-            	        column,
-            	        currentRow,
-            	        column
-            	));
+                moves.add(new Move(
+                        row,
+                        column,
+                        row,
+                        currentColumn
+                ));
 
             } else {
 
                 if (target.isWhite() != isWhite()) {
 
-                	moves.add(new Move(
-                	        row,
-                	        column,
-                	        currentRow,
-                	        column
-                	));
-
+                    moves.add(new Move(
+                            row,
+                            column,
+                            row,
+                            currentColumn
+                    ));
                 }
 
                 break;
