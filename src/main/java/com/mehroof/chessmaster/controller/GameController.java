@@ -240,20 +240,39 @@ public class GameController {
 
         for (Move move : legalMoves) {
 
-            System.out.println(
-                    "CLEAR HIGHLIGHT MOVE: "
-                    + move
-            );
-
             int row = move.getToRow();
             int column = move.getToColumn();
 
             System.out.println(
-                    "Destination = "
+                    "CLEAR HIGHLIGHT MOVE: "
+                    + "("
+                    + move.getFromRow()
+                    + ","
+                    + move.getFromColumn()
+                    + ") -> ("
                     + row
-                    + ", "
+                    + ","
                     + column
+                    + ")"
             );
+
+            if (!board.getBoardState().isInsideBoard(row, column)) {
+
+                System.err.println(
+                        "🚨 INVALID MOVE DURING CLEAR HIGHLIGHTS: "
+                        + "("
+                        + move.getFromRow()
+                        + ","
+                        + move.getFromColumn()
+                        + ") -> ("
+                        + row
+                        + ","
+                        + column
+                        + ")"
+                );
+
+                continue;
+            }
 
             ChessSquare square =
                     board.getSquare(row, column);
@@ -261,7 +280,6 @@ public class GameController {
             square.removeHighlight();
         }
     }
-    
     private boolean isKingInCheck(boolean white) {
 
         return isKingInCheck(boardState, white);
